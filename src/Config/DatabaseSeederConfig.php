@@ -8,6 +8,6 @@ use Spiral\Core\InjectableConfig;
 
 final class DatabaseSeederConfig extends InjectableConfig
 {
-    public const CONFIG = 'database-seeder';
+    public const CONFIG = 'seeder';
     protected $config = [];
 }

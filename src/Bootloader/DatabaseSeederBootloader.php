@@ -17,8 +17,9 @@ class DatabaseSeederBootloader extends Bootloader
         ConsoleBootloader::class
     ];
 
-    public function __construct(private ConfiguratorInterface $config)
-    {
+    public function __construct(
+        private ConfiguratorInterface $config
+    ) {
     }
 
     public function boot(Container $container, ConsoleBootloader $console): void
