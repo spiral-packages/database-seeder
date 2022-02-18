@@ -1,6 +1,11 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+declare(strict_types=1);
+
+namespace Spiral\DatabaseSeeder\Tests;
+
+use Spiral\Boot\Bootloader\ConfigurationBootloader;
+use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
 
 class TestCase extends \Spiral\Testing\TestCase
 {
@@ -12,8 +17,8 @@ class TestCase extends \Spiral\Testing\TestCase
     public function defineBootloaders(): array
     {
         return [
-            \Spiral\Boot\Bootloader\ConfigurationBootloader::class,
-            \VendorName\Skeleton\SkeletonBootloader::class,
+            ConfigurationBootloader::class,
+            DatabaseSeederBootloader::class,
             // ...
         ];
     }

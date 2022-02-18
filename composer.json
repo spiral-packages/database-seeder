@@ -1,17 +1,18 @@
 {
-  "name": ":vendor_slug/:package_slug",
-  "description": ":package_description",
+  "name": "spiral-packages/database-seeder",
+  "description": "The package provides the ability to seed your database with data using seed classes",
   "keywords": [
-    ":vendor_name",
+    "spiral-packages",
     "spiral",
-    ":package_slug"
+    "seeder",
+    "database-seeder"
   ],
-  "homepage": "https://github.com/:vendor_slug/:package_slug",
+  "homepage": "https://github.com/spiral-packages/database-seeder",
   "license": "MIT",
   "authors": [
     {
-      "name": ":author_name",
-      "email": "author@domain.com",
+      "name": "Maxim Smakouz",
+      "email": "m.smakouz@gmail.com",
       "role": "Developer"
     }
   ],
@@ -24,17 +25,17 @@
     "mockery/mockery": "^1.5",
     "phpunit/phpunit": "^9.5",
     "spiral/testing": "^1.0",
-    "vimeo/psalm": "^4.9"
+    "vimeo/psalm": "^4.20"
   },
   "autoload": {
     "psr-4": {
-      "VendorName\\Skeleton\\": "src"
+      "Spiral\\DatabaseSeeder\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "VendorName\\Skeleton\\Tests\\App\\": "tests/app",
-      "VendorName\\Skeleton\\Tests\\": "tests/src"
+      "Spiral\\DatabaseSeeder\\Tests\\App\\": "tests/app",
+      "Spiral\\DatabaseSeeder\\Tests\\": "tests/src"
     }
   },
   "scripts": {
@@ -47,7 +48,7 @@
   "extra": {
     "spiral": {
       "bootloaders": [
-        "VendorName\\Skeleton\\Bootloader\\SkeletonBootloader"
+        "Spiral\\DatabaseSeeder\\Bootloader\\DatabaseSeederBootloader"
       ]
     }
   },
