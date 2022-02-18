@@ -18,7 +18,7 @@ abstract class AbstractFactory implements FactoryInterface
     private array $afterCreate = [];
     protected Generator $faker;
 
-    public function __construct(
+    private function __construct(
         private array $replaces = []
     ) {
         $this->faker = FakerFactory::create();

@@ -7,15 +7,12 @@
 
 The package provides the ability to seed your database with data using seed classes.
 
-
 ## Requirements
 
 Make sure that your server is configured with following PHP version and extensions:
 
 - PHP 8.0+
 - Spiral framework 2.9+
-
-
  
 ## Installation
 
@@ -36,6 +33,77 @@ protected const LOAD = [
 
 > Note: if you are using [`spiral-packages/discoverer`](https://github.com/spiral-packages/discoverer), 
 > you don't need to register bootloader by yourself.
+
+## Usage
+
+### Creating entities by Factory
+
+Provides the ability to easily create entities, for example, in tests in your application or packages.
+
+You need to create a factory class, extend it from `Spiral\DatabaseSeeder\Factory\AbstractFactory` and implement 
+two methods `entity` and `definition`. Method `entity` must return a fully qualified class name. 
+Method `definition` must return an array with generation rules. Keys - properties in the target class. 
+Values - property value or calling method that can generate property value (for example, method from Faker).
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\Fixture\Seeder;
+
+use App\Tests\Fixture\Entity\User;
+use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+
+class UserFactory extends AbstractFactory
+{
+    public function entity(): string
+    {
+        return User::class;
+    }
+
+    public function definition(): array
+    {
+        return [
+            'firstName' => $this->faker->firstName(),
+            'lastName' => $this->faker->lastName(),
+            'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
+            'comments' => CommentFactory::new()->times(3)->create(), // Can use other factories.
+            // Be careful, circular dependencies are not allowed!
+        ];
+    }
+}
+```
+
+After that, you can use this factory in your code. For example:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests;
+
+use PHPUnit\Framework\TestCase;
+use App\Tests\Fixture\Seeder\UserFactory;
+
+class ExampleTest extends TestCase
+{
+    public function testExample(): void
+    {
+        // creating one user
+        $user = UserFactory::new()->createOne();
+        
+        // creating an array of ten users
+        $users = UserFactory::new()->times(10)->create();
+        
+        // creating a user with some specific data
+        $user = UserFactory::new(['firstName' => 'John', 'lastName' => 'Doe'])->createOne();
+    
+        // using callback, after creating entity
+        $user = UserFactory::new()->afterCreate(fn(User $user) => $user->firstName = 'Nick')->createOne();
+    }
+}
+```
 
 ## Testing
 

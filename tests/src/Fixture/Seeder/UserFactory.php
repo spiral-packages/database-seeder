@@ -19,7 +19,7 @@ class UserFactory extends AbstractFactory
         return [
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
-            'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime())
+            'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
         ];
     }
 }

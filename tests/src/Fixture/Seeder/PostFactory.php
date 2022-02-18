@@ -20,7 +20,7 @@ class PostFactory extends AbstractFactory
             'content' => $this->faker->randomHtml(),
             'author' => UserFactory::new()->createOne(),
             'publishedAt' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
-            'comments' => CommentFactory::new()->times(3)->create()
+            'comments' => CommentFactory::new()->times(3)->create(),
         ];
     }
 }
