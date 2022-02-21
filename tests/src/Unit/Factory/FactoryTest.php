@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Spiral\DatabaseSeeder\Tests\Fixture\Entity\Comment;
 use Spiral\DatabaseSeeder\Tests\Fixture\Entity\Post;
 use Spiral\DatabaseSeeder\Tests\Fixture\Entity\User;
-use Spiral\DatabaseSeeder\Tests\Fixture\Seeder\CommentFactory;
-use Spiral\DatabaseSeeder\Tests\Fixture\Seeder\PostFactory;
-use Spiral\DatabaseSeeder\Tests\Fixture\Seeder\UserFactory;
+use Spiral\DatabaseSeeder\Tests\Fixture\Factory\CommentFactory;
+use Spiral\DatabaseSeeder\Tests\Fixture\Factory\PostFactory;
+use Spiral\DatabaseSeeder\Tests\Fixture\Factory\UserFactory;
 
 class FactoryTest extends TestCase
 {

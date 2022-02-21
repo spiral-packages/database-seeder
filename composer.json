@@ -21,6 +21,8 @@
     "butschster/entity-faker": "^0.9",
     "fakerphp/faker": "^1.19",
     "laminas/laminas-hydrator": "^4.3",
+    "spiral/attributes": "^2.9",
+    "doctrine/annotations": "^1.13",
     "spiral/boot": "^2.9",
     "spiral/console": "^2.9"
   },

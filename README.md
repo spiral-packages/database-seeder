@@ -50,7 +50,7 @@ Values - property value or calling method that can generate property value (for 
 
 declare(strict_types=1);
 
-namespace App\Tests\Fixture\Seeder;
+namespace App\Tests\Fixture\Factory;
 
 use App\Tests\Fixture\Entity\User;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
@@ -84,7 +84,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use PHPUnit\Framework\TestCase;
-use App\Tests\Fixture\Seeder\UserFactory;
+use App\Tests\Fixture\Factory\UserFactory;
 
 class ExampleTest extends TestCase
 {

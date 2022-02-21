@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DatabaseSeeder\Tests\Fixture\Seeder;
+namespace Spiral\DatabaseSeeder\Tests\Fixture\Factory;
 
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 use Spiral\DatabaseSeeder\Tests\Fixture\Entity\Post;

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
-use Spiral\Core\Container;
+use Spiral\Boot\DirectoriesInterface;
 use Spiral\Config\ConfiguratorInterface;
-use Spiral\DatabaseSeeder\Commands;
-use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
 use Spiral\Console\Bootloader\ConsoleBootloader;
+use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
+use Spiral\DatabaseSeeder\Console\Command\SeedCommand;
 
 class DatabaseSeederBootloader extends Bootloader
 {
@@ -18,26 +18,27 @@ class DatabaseSeederBootloader extends Bootloader
     ];
 
     public function __construct(
-        private ConfiguratorInterface $config
+        private ConfiguratorInterface $config,
+        private DirectoriesInterface $dirs
     ) {
     }
 
-    public function boot(Container $container, ConsoleBootloader $console): void
+    public function boot(ConsoleBootloader $console): void
     {
         $this->initConfig();
 
-        $console->addCommand(Commands\DatabaseSeederCommand::class);
-    }
-
-    public function start(Container $container): void
-    {
+        $console->addCommand(SeedCommand::class);
     }
 
     private function initConfig(): void
     {
+        $defaultDirectory = $this->dirs->get('app') . DatabaseSeederConfig::DEFAULT_DIRECTORY;
+
         $this->config->setDefaults(
             DatabaseSeederConfig::CONFIG,
-            []
+            [
+                'directory' => env(DatabaseSeederConfig::DIRECTORY_ENV_KEY, $defaultDirectory)
+            ]
         );
     }
 }
