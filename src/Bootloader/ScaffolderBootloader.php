@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Spiral\DatabaseSeeder\Bootloader;
+
+use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
+use Spiral\DatabaseSeeder\Scaffolder\Declaration;
+use Spiral\Boot\Bootloader\Bootloader;
+use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
+
+class ScaffolderBootloader extends Bootloader
+{
+    public const DEPENDENCIES = [
+        ConfigurationBootloader::class,
+        BaseScaffolderBootloader::class,
+    ];
+
+    public function boot(BaseScaffolderBootloader $scaffolder, DatabaseSeederConfig $config): void
+    {
+        // TODO waiting SF 2.10
+
+        /** @psalm-suppress UndefinedMethod */
+        $scaffolder->addDeclaration('factory', [
+            'namespace' => $config->getFactoriesNamespace(),
+            'postfix'   => 'Factory',
+            'class'     => Declaration\FactoryDeclaration::class,
+        ]);
+
+        /** @psalm-suppress UndefinedMethod */
+        $scaffolder->addDeclaration('seeder', [
+            'namespace' => '',
+            'postfix'   => 'Seeder',
+            'class'     => Declaration\SeederDeclaration::class,
+        ]);
+    }
+}

@@ -23,12 +23,12 @@ class DirectoryLocator
      */
     public function find(): array
     {
-        if (!$this->files->isDirectory($this->config->getDirectory())) {
+        if (!$this->files->isDirectory($this->config->getSeedersDirectory())) {
             return [];
         }
 
         $seeders = [];
-        foreach ($this->files->getFiles($this->config->getDirectory(), '*.php') as $filename) {
+        foreach ($this->files->getFiles($this->config->getSeedersDirectory(), '*.php') as $filename) {
             $reflection = new ReflectionFile($filename);
             $classes = $reflection->getClasses();
             if ($classes === [] || !Locator::isSeederClass($classes[0])) {
