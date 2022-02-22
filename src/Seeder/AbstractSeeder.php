@@ -6,7 +6,7 @@ namespace Spiral\DatabaseSeeder\Seeder;
 
 abstract class AbstractSeeder implements SeederInterface
 {
-    public abstract function __invoke(): void;
+    public abstract function run(): \Generator;
 
     /**
      * @psalm-param positive-int $priority

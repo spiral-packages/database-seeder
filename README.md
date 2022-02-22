@@ -19,7 +19,7 @@ Make sure that your server is configured with following PHP version and extensio
 You can install the package via composer:
 
 ```bash
-composer require spiral-packages/database-seeder
+composer require spiral-packages/database-seeder --dev
 ```
 
 After package install you need to register bootloader from the package.

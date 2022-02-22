@@ -7,9 +7,9 @@ namespace Spiral\DatabaseSeeder\Seeder;
 interface SeederInterface
 {
     /**
-     * Seed the application's database.
+     * Returns iterable database entities.
      */
-    public function __invoke(): void;
+    public function run(): \Generator;
 
     /**
      * @psalm-return positive-int
