@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DatabaseSeeder\Tests\Fixture\Factory;
+namespace Tests\Fixture\Factory;
 
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
-use Spiral\DatabaseSeeder\Tests\Fixture\Entity\User;
+use Tests\Fixture\Entity\User;
 
 class UserFactory extends AbstractFactory
 {

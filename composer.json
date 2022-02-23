@@ -29,6 +29,7 @@
     "spiral/console": "^2.9"
   },
   "require-dev": {
+    "spiral/framework": "^2.9",
     "mockery/mockery": "^1.5",
     "phpunit/phpunit": "^9.5",
     "spiral/testing": "^1.0",
@@ -41,8 +42,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Spiral\\DatabaseSeeder\\Tests\\App\\": "tests/app",
-      "Spiral\\DatabaseSeeder\\Tests\\": "tests/src"
+      "Tests\\App\\": "tests/app",
+      "Tests\\": "tests/src"
     }
   },
   "scripts": {

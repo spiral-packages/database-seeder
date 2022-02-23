@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DatabaseSeeder\Tests\Fixture\Entity;
+namespace Tests\Fixture\Entity;
 
 class Comment
 {

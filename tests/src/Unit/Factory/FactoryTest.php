@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DatabaseSeeder\Tests\Unit\Factory;
+namespace Tests\Unit\Factory;
 
 use PHPUnit\Framework\TestCase;
-use Spiral\DatabaseSeeder\Tests\Fixture\Entity\Comment;
-use Spiral\DatabaseSeeder\Tests\Fixture\Entity\Post;
-use Spiral\DatabaseSeeder\Tests\Fixture\Entity\User;
-use Spiral\DatabaseSeeder\Tests\Fixture\Factory\CommentFactory;
-use Spiral\DatabaseSeeder\Tests\Fixture\Factory\PostFactory;
-use Spiral\DatabaseSeeder\Tests\Fixture\Factory\UserFactory;
+use Tests\Fixture\Entity\Comment;
+use Tests\Fixture\Entity\Post;
+use Tests\Fixture\Entity\User;
+use Tests\Fixture\Factory\CommentFactory;
+use Tests\Fixture\Factory\PostFactory;
+use Tests\Fixture\Factory\UserFactory;
 
 class FactoryTest extends TestCase
 {

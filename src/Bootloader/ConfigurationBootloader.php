@@ -6,6 +6,7 @@ namespace Spiral\DatabaseSeeder\Bootloader;
 
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Boot\DirectoriesInterface;
+use Spiral\Boot\EnvironmentInterface;
 use Spiral\Config\ConfiguratorInterface;
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig as Config;
 
@@ -17,12 +18,12 @@ class ConfigurationBootloader extends Bootloader
     ) {
     }
 
-    public function boot(): void
+    public function boot(EnvironmentInterface $env): void
     {
-        $this->initConfig();
+        $this->initConfig($env);
     }
 
-    private function initConfig(): void
+    private function initConfig(EnvironmentInterface $env): void
     {
         $defaultSeedersDir = $this->dirs->get('app') . Config::DEFAULT_SEEDERS_DIR;
         $defaultFactoriesDir = $this->dirs->get('app') . Config::DEFAULT_FACTORIES_DIR;
@@ -31,12 +32,12 @@ class ConfigurationBootloader extends Bootloader
             Config::CONFIG,
             [
                 'seeders' => [
-                    'directory' => env(Config::SEEDERS_DIR_ENV_KEY, $defaultSeedersDir),
-                    'namespace' => env(Config::SEEDERS_NAMESPACE_ENV_KEY, Config::DEFAULT_SEEDERS_NAMESPACE),
+                    'directory' => $env->get(Config::SEEDERS_DIR_ENV_KEY, $defaultSeedersDir),
+                    'namespace' => $env->get(Config::SEEDERS_NAMESPACE_ENV_KEY, Config::DEFAULT_SEEDERS_NAMESPACE),
                 ],
                 'factories' => [
-                    'directory' => env(Config::FACTORIES_DIR_ENV_KEY, $defaultFactoriesDir),
-                    'namespace' => env(Config::FACTORIES_NAMESPACE_ENV_KEY, Config::DEFAULT_FACTORIES_NAMESPACE),
+                    'directory' => $env->get(Config::FACTORIES_DIR_ENV_KEY, $defaultFactoriesDir),
+                    'namespace' => $env->get(Config::FACTORIES_NAMESPACE_ENV_KEY, Config::DEFAULT_FACTORIES_NAMESPACE),
                 ],
             ]
         );
