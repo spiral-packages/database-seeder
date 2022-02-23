@@ -31,11 +31,12 @@ class DirectoryLocator
         foreach ($this->files->getFiles($this->config->getSeedersDirectory(), '*.php') as $filename) {
             $reflection = new ReflectionFile($filename);
             $classes = $reflection->getClasses();
-            if ($classes === [] || !Locator::isSeederClass($classes[0])) {
+
+            if ($classes === [] || !Locator::isSeederClass(new \ReflectionClass($classes[0]))) {
                 continue;
             }
 
-            $seeders[] = $this->factory->make($classes[0]->getName());
+            $seeders[] = $this->factory->make($classes[0]);
         }
 
         return $seeders;
