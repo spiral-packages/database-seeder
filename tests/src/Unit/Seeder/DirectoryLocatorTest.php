@@ -12,7 +12,7 @@ use Spiral\DatabaseSeeder\Seeder\SeederInterface;
 use Spiral\Files\FilesInterface;
 use Tests\Fixture\Seeder\UserSeeder;
 
-class DirectoryLocatorTest extends TestCase
+final class DirectoryLocatorTest extends TestCase
 {
     public function testFind(): void
     {

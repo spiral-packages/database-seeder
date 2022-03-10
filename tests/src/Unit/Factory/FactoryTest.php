@@ -12,7 +12,7 @@ use Tests\Fixture\Factory\CommentFactory;
 use Tests\Fixture\Factory\PostFactory;
 use Tests\Fixture\Factory\UserFactory;
 
-class FactoryTest extends TestCase
+final class FactoryTest extends TestCase
 {
     public function testCreateEntity(): void
     {

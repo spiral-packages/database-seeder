@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Bootloader;
 
-use Spiral\Core\ConfigsInterface;
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
 use Tests\TestCase;
 
@@ -32,7 +31,7 @@ final class ConfigurationBootloaderTest extends TestCase
 
         $this->assertSame(
             $target,
-            $this->getApp()->getContainer()->get(ConfigsInterface::class)->getConfig(DatabaseSeederConfig::CONFIG)
+            $this->getConfig(DatabaseSeederConfig::CONFIG)
         );
     }
 }

@@ -14,6 +14,6 @@ class DatabaseSeederBootloader extends Bootloader
     protected const DEPENDENCIES = [
         ConfigurationBootloader::class,
         CommandBootloader::class,
-        // ScaffolderBootloader::class, // TODO waiting SF 2.10
+        ScaffolderBootloader::class,
     ];
 }

@@ -22,17 +22,17 @@
     "butschster/entity-faker": "^0.9",
     "fakerphp/faker": "^1.19",
     "laminas/laminas-hydrator": "^4.3",
-    "spiral/attributes": "^2.9",
-    "spiral/scaffolder": "^2.9",
+    "spiral/attributes": "^2.10",
+    "spiral/scaffolder": "^2.10",
     "doctrine/annotations": "^1.13",
-    "spiral/boot": "^2.9",
-    "spiral/console": "^2.9"
+    "spiral/boot": "^2.10",
+    "spiral/console": "^2.10"
   },
   "require-dev": {
-    "spiral/framework": "^2.9",
+    "spiral/framework": "^2.10",
     "mockery/mockery": "^1.5",
     "phpunit/phpunit": "^9.5",
-    "spiral/testing": "^1.0",
+    "spiral/testing": "^1.1",
     "vimeo/psalm": "^4.20"
   },
   "autoload": {

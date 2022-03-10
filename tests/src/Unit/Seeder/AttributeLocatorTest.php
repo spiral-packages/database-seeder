@@ -14,7 +14,7 @@ use Tests\Fixture\Seeder\CommentSeeder;
 use Tests\Fixture\Seeder\PostSeeder;
 use Tests\Fixture\Seeder\UserSeeder;
 
-class AttributeLocatorTest extends TestCase
+final class AttributeLocatorTest extends TestCase
 {
     public function testFind(): void
     {

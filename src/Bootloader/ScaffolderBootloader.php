@@ -18,16 +18,12 @@ class ScaffolderBootloader extends Bootloader
 
     public function boot(BaseScaffolderBootloader $scaffolder, DatabaseSeederConfig $config): void
     {
-        // TODO waiting SF 2.10
-
-        /** @psalm-suppress UndefinedMethod */
         $scaffolder->addDeclaration('factory', [
             'namespace' => $config->getFactoriesNamespace(),
             'postfix'   => 'Factory',
             'class'     => Declaration\FactoryDeclaration::class,
         ]);
 
-        /** @psalm-suppress UndefinedMethod */
         $scaffolder->addDeclaration('seeder', [
             'namespace' => '',
             'postfix'   => 'Seeder',
