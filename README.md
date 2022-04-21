@@ -50,9 +50,9 @@ Values - property value or calling method that can generate property value (for 
 
 declare(strict_types=1);
 
-namespace App\Tests\Fixture\Factory;
+namespace Database\Seeder;
 
-use App\Tests\Fixture\Entity\User;
+use App\Entity\User;
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
 
 class UserFactory extends AbstractFactory
@@ -81,26 +81,17 @@ After that, you can use this factory in your code. For example:
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace Database\Seeder;
 
-use PHPUnit\Framework\TestCase;
-use App\Tests\Fixture\Factory\UserFactory;
+use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
 
-class ExampleTest extends TestCase
+class UserTableSeeder extends AbstractSeeder
 {
-    public function testExample(): void
+    public function run(): \Generator
     {
-        // creating one user
-        $user = UserFactory::new()->createOne();
-        
-        // creating an array of ten users
-        $users = UserFactory::new()->times(10)->create();
-        
-        // creating a user with some specific data
-        $user = UserFactory::new(['firstName' => 'John', 'lastName' => 'Doe'])->createOne();
-    
-        // using callback, after creating entity
-        $user = UserFactory::new()->afterCreate(fn(User $user) => $user->firstName = 'Nick')->createOne();
+        foreach (UserFactory::new()->times(100)->create() as $user) {
+            yield $user;
+        }
     }
 }
 ```
