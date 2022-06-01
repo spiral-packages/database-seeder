@@ -27,7 +27,7 @@ final class AttributeLocatorTest extends TestCase
 
         $locator = new AttributeLocator($classes, new AttributeReader(),
             new class() implements FactoryInterface {
-            public function make(string $alias, array $parameters = [])
+            public function make(string $alias, array $parameters = []): mixed
             {
                 return new $alias($parameters['priority']);
             }

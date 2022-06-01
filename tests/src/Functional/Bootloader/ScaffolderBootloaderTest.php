@@ -21,15 +21,17 @@ final class ScaffolderBootloaderTest extends TestCase
                 'namespace' => $config->getFactoriesNamespace(),
                 'postfix'   => 'Factory',
                 'class'     => Declaration\FactoryDeclaration::class,
+                'baseNamespace' => ''
             ],
             $declarations['factory']
         );
 
         $this->assertSame(
             [
-                'namespace' => '',
+                'namespace' => $config->getSeedersNamespace(),
                 'postfix'   => 'Seeder',
                 'class'     => Declaration\SeederDeclaration::class,
+                'baseNamespace' => ''
             ],
             $declarations['seeder']
         );

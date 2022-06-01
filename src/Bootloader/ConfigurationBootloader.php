@@ -18,7 +18,7 @@ class ConfigurationBootloader extends Bootloader
     ) {
     }
 
-    public function boot(EnvironmentInterface $env): void
+    public function init(EnvironmentInterface $env): void
     {
         $this->initConfig($env);
     }

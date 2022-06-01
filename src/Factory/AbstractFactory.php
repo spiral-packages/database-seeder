@@ -71,7 +71,7 @@ abstract class AbstractFactory implements FactoryInterface
     {
         $entity = $this->make([$this, 'definition']);
         if (\is_array($entity)) {
-            $entity = array_shift($entity);
+            $entity = \array_shift($entity);
         }
 
         $this->callAfterCreating([$entity]);

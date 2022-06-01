@@ -7,11 +7,10 @@ namespace Spiral\DatabaseSeeder\Console\Command;
 use Spiral\DatabaseSeeder\Scaffolder\Declaration\FactoryDeclaration;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class FactoryCommand extends AbstractScaffolderCommand
+final class FactoryCommand extends AbstractScaffolderCommand
 {
-    public const ELEMENT = 'factory';
-
     protected const NAME        = 'create:factory';
     protected const DESCRIPTION = 'Create factory for database seeding';
     protected const ARGUMENTS   = [
@@ -31,11 +30,15 @@ class FactoryCommand extends AbstractScaffolderCommand
      */
     public function perform(): int
     {
+        /** @psalm-suppress PossiblyNullArgument */
+        $io = new SymfonyStyle($this->input, $this->output);
+
         /** @var FactoryDeclaration $declaration */
-        $declaration = $this->createDeclaration();
-        $declaration->declare();
+        $declaration = $this->createDeclaration(FactoryDeclaration::class);
 
         $this->writeDeclaration($declaration);
+
+        $io->success("Factory {$declaration->getClass()->getName()} has been successfully created.");
 
         return self::SUCCESS;
     }

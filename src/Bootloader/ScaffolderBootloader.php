@@ -18,16 +18,18 @@ class ScaffolderBootloader extends Bootloader
 
     public function boot(BaseScaffolderBootloader $scaffolder, DatabaseSeederConfig $config): void
     {
-        $scaffolder->addDeclaration('factory', [
+        $scaffolder->addDeclaration(Declaration\FactoryDeclaration::TYPE, [
             'namespace' => $config->getFactoriesNamespace(),
-            'postfix'   => 'Factory',
-            'class'     => Declaration\FactoryDeclaration::class,
+            'postfix' => 'Factory',
+            'class' => Declaration\FactoryDeclaration::class,
+            'baseNamespace' => '',
         ]);
 
-        $scaffolder->addDeclaration('seeder', [
-            'namespace' => '',
-            'postfix'   => 'Seeder',
-            'class'     => Declaration\SeederDeclaration::class,
+        $scaffolder->addDeclaration(Declaration\SeederDeclaration::TYPE, [
+            'namespace' => $config->getSeedersNamespace(),
+            'postfix' => 'Seeder',
+            'class' => Declaration\SeederDeclaration::class,
+            'baseNamespace' => '',
         ]);
     }
 }

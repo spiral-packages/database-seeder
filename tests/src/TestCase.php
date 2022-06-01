@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Spiral\Boot\AbstractKernel;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
-use Spiral\Testing\TestableKernelInterface;
-use Tests\App\TestApp;
-
 class TestCase extends \Spiral\Testing\TestCase
 {
     public function rootDirectory(): string
@@ -23,17 +19,5 @@ class TestCase extends \Spiral\Testing\TestCase
             ConfigurationBootloader::class,
             DatabaseSeederBootloader::class,
         ];
-    }
-
-    /**
-     * @return AbstractKernel|TestableKernelInterface
-     * @throws \Throwable
-     */
-    public function createAppInstance(): TestableKernelInterface
-    {
-        return TestApp::createWithBootloaders(
-            $this->defineBootloaders(),
-            $this->defineDirectories($this->rootDirectory())
-        );
     }
 }

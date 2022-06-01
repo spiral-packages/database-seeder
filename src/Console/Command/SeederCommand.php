@@ -7,11 +7,10 @@ namespace Spiral\DatabaseSeeder\Console\Command;
 use Spiral\DatabaseSeeder\Scaffolder\Declaration\SeederDeclaration;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SeederCommand extends AbstractScaffolderCommand
+final class SeederCommand extends AbstractScaffolderCommand
 {
-    public const ELEMENT = 'seeder';
-
     protected const NAME        = 'create:seeder';
     protected const DESCRIPTION = 'Create seeder for database seeding';
     protected const ARGUMENTS   = [
@@ -26,16 +25,17 @@ class SeederCommand extends AbstractScaffolderCommand
         ],
     ];
 
-    /**
-     * Create repository declaration.
-     */
     public function perform(): int
     {
+        /** @psalm-suppress PossiblyNullArgument */
+        $io = new SymfonyStyle($this->input, $this->output);
+
         /** @var SeederDeclaration $declaration */
-        $declaration = $this->createDeclaration();
-        $declaration->declare();
+        $declaration = $this->createDeclaration(SeederDeclaration::class);
 
         $this->writeDeclaration($declaration);
+
+        $io->success("Seeder {$declaration->getClass()->getName()} has been successfully created.");
 
         return self::SUCCESS;
     }

@@ -11,7 +11,7 @@ use Spiral\DatabaseSeeder\Seeder\SeederInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SeedCommand extends Command
+final class SeedCommand extends Command
 {
     protected const NAME = 'db:seed';
     protected const DESCRIPTION = 'Seed the database with records';

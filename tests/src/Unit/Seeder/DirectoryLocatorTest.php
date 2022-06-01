@@ -56,7 +56,7 @@ final class DirectoryLocatorTest extends TestCase
 
         return new DirectoryLocator($files, $config,
             new class() implements FactoryInterface {
-                public function make(string $alias, array $parameters = [])
+                public function make(string $alias, array $parameters = []): mixed
                 {
                     return new $alias;
                 }
