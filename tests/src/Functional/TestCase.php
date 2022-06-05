@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
+use Cycle\Database\Database;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
-use Spiral\Cycle\Bootloader\AnnotatedBootloader;
-use Spiral\Cycle\Bootloader\CycleOrmBootloader;
-use Spiral\Cycle\Bootloader\DatabaseBootloader;
-use Spiral\Cycle\Bootloader\MigrationsBootloader;
-use Spiral\Cycle\Bootloader\SchemaBootloader;
+use Spiral\Cycle\Bootloader as CycleOrmBridge;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
 
 abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->cleanUpRuntimeDirectory();
+    }
+
     public function rootDirectory(): string
     {
         return \dirname(__DIR__, 2);
@@ -34,12 +38,29 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
     {
         return [
             ConfigurationBootloader::class,
-            DatabaseBootloader::class,
-            MigrationsBootloader::class,
-            SchemaBootloader::class,
-            CycleOrmBootloader::class,
-            AnnotatedBootloader::class,
+            CycleOrmBridge\DatabaseBootloader::class,
+            CycleOrmBridge\MigrationsBootloader::class,
+            CycleOrmBridge\SchemaBootloader::class,
+            CycleOrmBridge\CycleOrmBootloader::class,
+            CycleOrmBridge\AnnotatedBootloader::class,
+            CycleOrmBridge\CommandBootloader::class,
             DatabaseSeederBootloader::class,
         ];
+    }
+
+    public function assertTableExists(string $table): void
+    {
+        static::assertTrue(
+            $this->getContainer()->get(Database::class)->hasTable($table),
+            \sprintf('Table [%s] does not exist.', $table)
+        );
+    }
+
+    public function assertTableIsNotExists(string $table): void
+    {
+        static::assertFalse(
+            $this->getContainer()->get(Database::class)->hasTable($table),
+            \sprintf('Table [%s] exists.', $table)
+        );
     }
 }
