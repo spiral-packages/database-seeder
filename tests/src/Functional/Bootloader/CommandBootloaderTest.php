@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Bootloader;
 
 use Spiral\Console\Config\ConsoleConfig;
-use Tests\TestCase;
+use Tests\Functional\TestCase;
 use Spiral\DatabaseSeeder\Console\Command;
 
 final class CommandBootloaderTest extends TestCase

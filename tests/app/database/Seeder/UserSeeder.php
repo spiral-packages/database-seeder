@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Seeder;
+namespace Tests\Database\Seeder;
 
 use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
-use Tests\Fixture\Factory\UserFactory;
+use Tests\Database\Factory\UserFactory;
 
 class UserSeeder extends AbstractSeeder
 {

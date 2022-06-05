@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Seeder;
+namespace Tests\Database\Seeder;
 
 use Spiral\DatabaseSeeder\Attribute\Seeder;
 use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
-use Tests\Fixture\Entity\Comment;
-use Tests\Fixture\Entity\Post;
-use Tests\Fixture\Entity\User;
-use Tests\Fixture\Factory\PostFactory;
-use Tests\Fixture\Factory\UserFactory;
+use Tests\App\Database\Comment;
+use Tests\App\Database\Post;
+use Tests\App\Database\User;
+use Tests\Database\Factory\PostFactory;
+use Tests\Database\Factory\UserFactory;
 
 #[Seeder]
 class CommentSeeder extends AbstractSeeder
@@ -20,7 +20,7 @@ class CommentSeeder extends AbstractSeeder
         /** @var Post $post */
         $post = PostFactory::new()->createOne();
         /** @var User $user */
-        $user= UserFactory::new()->createOne();
+        $user = UserFactory::new()->createOne();
 
         $comment = new Comment();
         $comment->post = $post;

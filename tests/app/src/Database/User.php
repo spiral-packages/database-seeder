@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Entity;
+namespace Tests\App\Database;
 
 class User
 {
@@ -11,4 +11,7 @@ class User
     public string $lastName;
     public ?\DateTimeImmutable $birthday = null;
     public ?string $city = null;
+    public int $age;
+    public bool $active;
+    public float $someFloatVal;
 }

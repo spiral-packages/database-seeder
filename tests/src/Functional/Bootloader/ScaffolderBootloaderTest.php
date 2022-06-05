@@ -7,7 +7,7 @@ namespace Tests\Functional\Bootloader;
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
 use Spiral\DatabaseSeeder\Scaffolder\Declaration;
 use Spiral\Scaffolder\Config\ScaffolderConfig;
-use Tests\TestCase;
+use Tests\Functional\TestCase;
 
 final class ScaffolderBootloaderTest extends TestCase
 {

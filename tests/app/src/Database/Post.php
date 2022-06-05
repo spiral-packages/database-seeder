@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Entity;
+namespace Tests\App\Database;
 
 class Post
 {

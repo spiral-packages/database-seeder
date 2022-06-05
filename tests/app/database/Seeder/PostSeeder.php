@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Seeder;
+namespace Tests\Database\Seeder;
 
 use Spiral\DatabaseSeeder\Attribute\Seeder;
 use Spiral\DatabaseSeeder\Seeder\AbstractSeeder;
-use Tests\Fixture\Factory\PostFactory;
+use Tests\Database\Factory\PostFactory;
 
 #[Seeder(priority: 3)]
 class PostSeeder extends AbstractSeeder

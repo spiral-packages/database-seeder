@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Bootloader;
 
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
-use Tests\TestCase;
+use Tests\Functional\TestCase;
 
 final class ConfigurationBootloaderTest extends TestCase
 {

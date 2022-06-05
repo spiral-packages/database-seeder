@@ -10,9 +10,9 @@ use Spiral\Core\FactoryInterface;
 use Spiral\DatabaseSeeder\Seeder\AttributeLocator;
 use Spiral\DatabaseSeeder\Seeder\SeederInterface;
 use Spiral\Tokenizer\ClassesInterface;
-use Tests\Fixture\Seeder\CommentSeeder;
-use Tests\Fixture\Seeder\PostSeeder;
-use Tests\Fixture\Seeder\UserSeeder;
+use Tests\Database\Seeder\CommentSeeder;
+use Tests\Database\Seeder\PostSeeder;
+use Tests\Database\Seeder\UserSeeder;
 
 final class AttributeLocatorTest extends TestCase
 {
