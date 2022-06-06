@@ -5,15 +5,28 @@ declare(strict_types=1);
 use Cycle\Database\Config;
 
 return [
-    'default' => 'default',
+    'default' => env('DEFAULT_DB'),
     'databases' => [
-        'default' => [
-            'driver' => 'testing',
+        'sqlite' => [
+            'driver' => 'sqlite',
+        ],
+        'mysql' => [
+            'driver' => 'mysql',
         ],
     ],
     'drivers' => [
-        'testing' => new Config\SQLiteDriverConfig(
+        'sqlite' => new Config\SQLiteDriverConfig(
             connection: new Config\SQLite\MemoryConnectionConfig(),
+            queryCache: true
+        ),
+        'mysql' => new Config\MySQLDriverConfig(
+            connection: new Config\MySQL\TcpConnectionConfig(
+                database: 'spiral',
+                host: '127.0.0.1',
+                port: 13306,
+                user: 'root',
+                password: 'root',
+            ),
             queryCache: true
         ),
     ],

@@ -11,6 +11,10 @@ use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
 
 abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
 {
+    public const ENV = [
+        'DEFAULT_DB' => 'sqlite'
+    ];
+
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -39,6 +43,7 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
         return [
             ConfigurationBootloader::class,
             CycleOrmBridge\DatabaseBootloader::class,
+            CycleOrmBridge\MigrationsBootloader::class,
             CycleOrmBridge\SchemaBootloader::class,
             CycleOrmBridge\CycleOrmBootloader::class,
             CycleOrmBridge\AnnotatedBootloader::class,
