@@ -6,7 +6,6 @@ namespace Tests\Functional\Database\Traits;
 
 use Cycle\Database\Config\MySQL\TcpConnectionConfig;
 use Cycle\Database\Config\MySQLDriverConfig;
-use Spiral\DatabaseSeeder\Database\Exception\RefreshDatabaseException;
 use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
 use Tests\Functional\TestCase;
 
@@ -45,27 +44,5 @@ final class RefreshDatabaseTest extends TestCase
         $this->assertTableExists('comments');
         $this->assertTableExists('posts');
         $this->assertTableExists('users');
-    }
-
-    public function testRefreshInMemoryDatabaseMigrationsNotConfigured(): void
-    {
-        $this->updateConfig('migration.directory', null);
-
-        $this->expectException(RefreshDatabaseException::class);
-        $this->expectExceptionMessage(
-            'Please, configure migrations in your test application to use auto database refreshing.'
-        );
-        $this->refreshInMemoryDatabase();
-    }
-
-    public function testRefreshInMemoryDatabaseMigrationsSafeIsFalse(): void
-    {
-        $this->updateConfig('migration.safe', false);
-
-        $this->expectException(RefreshDatabaseException::class);
-        $this->expectExceptionMessage(
-            'The `safe` parameter in the test application migrations configuration must be set to true.'
-        );
-        $this->refreshInMemoryDatabase();
     }
 }

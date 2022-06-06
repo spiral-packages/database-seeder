@@ -6,7 +6,6 @@ namespace Spiral\DatabaseSeeder\Database\Traits;
 
 use Cycle\Database\Config\SQLite\MemoryConnectionConfig;
 use Cycle\Database\DatabaseManager;
-use Spiral\DatabaseSeeder\Database\Exception\RefreshDatabaseException;
 
 trait RefreshDatabase
 {
@@ -29,22 +28,7 @@ trait RefreshDatabase
      */
     protected function refreshInMemoryDatabase(): void
     {
-        $config = $this->getConfig('migration');
-        if (empty($config['directory'])) {
-            throw new RefreshDatabaseException(
-                'Please, configure migrations in your test application to use auto database refreshing.'
-            );
-        }
-
-        if (!isset($config['safe']) || $config['safe'] !== true) {
-            throw new RefreshDatabaseException(
-                'The `safe` parameter in the test application migrations configuration must be set to true.'
-            );
-        }
-
-        $this->getConsole()->run('cycle:migrate', ['--run' => true]);
-
-        $this->cleanupDirectories($config['directory']);
+        $this->runCommand('cycle:sync');
     }
 
     /**

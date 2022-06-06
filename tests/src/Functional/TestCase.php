@@ -39,7 +39,6 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
         return [
             ConfigurationBootloader::class,
             CycleOrmBridge\DatabaseBootloader::class,
-            CycleOrmBridge\MigrationsBootloader::class,
             CycleOrmBridge\SchemaBootloader::class,
             CycleOrmBridge\CycleOrmBootloader::class,
             CycleOrmBridge\AnnotatedBootloader::class,
