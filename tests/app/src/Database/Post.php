@@ -7,7 +7,7 @@ namespace Tests\App\Database;
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\HasMany;
-use Cycle\Annotated\Annotation\Relation\HasOne;
+use Cycle\Annotated\Annotation\Relation\BelongsTo;
 
 #[Entity(table: 'posts')]
 class Post
@@ -18,7 +18,7 @@ class Post
     #[Column(type: 'text')]
     public string $content;
 
-    #[HasOne(target: User::class, fkCreate: false)]
+    #[BelongsTo(target: User::class, fkCreate: false)]
     public User $author;
 
     #[Column(type: 'datetime')]

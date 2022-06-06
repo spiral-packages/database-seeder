@@ -6,7 +6,7 @@ namespace Tests\App\Database;
 
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
-use Cycle\Annotated\Annotation\Relation\HasOne;
+use Cycle\Annotated\Annotation\Relation\BelongsTo;
 
 #[Entity(table: 'comments')]
 class Comment
@@ -17,10 +17,10 @@ class Comment
     #[Column(type: 'text')]
     public string $text;
 
-    #[HasOne(target: User::class, fkCreate: false)]
+    #[BelongsTo(target: User::class, fkCreate: false)]
     public User $author;
 
-    #[HasOne(target: Post::class, fkCreate: false)]
+    #[BelongsTo(target: Post::class, fkCreate: false)]
     public Post $post;
 
     #[Column(type: 'datetime')]
