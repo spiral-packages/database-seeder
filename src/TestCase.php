@@ -13,10 +13,16 @@ abstract class TestCase extends \Spiral\Testing\TestCase
         $this->setUpTraits();
     }
 
-    private function setUpTraits()
+    private function setUpTraits(): void
     {
+        /** @see \Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase */
         if (\method_exists($this, 'refreshDatabase')) {
             $this->refreshDatabase();
+        }
+
+        /** @see \Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations */
+        if (\method_exists($this, 'runDatabaseMigrations')) {
+            $this->runDatabaseMigrations();
         }
     }
 }
