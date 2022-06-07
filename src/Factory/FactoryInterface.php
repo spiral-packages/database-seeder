@@ -18,4 +18,8 @@ interface FactoryInterface
     public function create(): array;
 
     public function createOne(): object;
+
+    public function make(): array;
+
+    public function makeOne(): object;
 }

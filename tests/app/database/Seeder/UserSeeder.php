@@ -13,6 +13,6 @@ class UserSeeder extends AbstractSeeder
 
     public function run(): \Generator
     {
-        yield UserFactory::new()->createOne();
+        yield UserFactory::new()->makeOne();
     }
 }

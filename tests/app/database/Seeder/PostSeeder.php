@@ -13,6 +13,6 @@ class PostSeeder extends AbstractSeeder
 {
     public function run(): \Generator
     {
-        yield from PostFactory::new()->times(10)->create();
+        yield from PostFactory::new()->times(10)->make();
     }
 }

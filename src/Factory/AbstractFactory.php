@@ -61,7 +61,17 @@ abstract class AbstractFactory implements FactoryInterface
 
     public function create(): array
     {
-        $entities = $this->make([$this, 'definition']);
+
+    }
+
+    public function createOne(): object
+    {
+
+    }
+
+    public function make(): array
+    {
+        $entities = $this->object([$this, 'definition']);
         if (!\is_array($entities)) {
             $entities = [$entities];
         }
@@ -69,6 +79,18 @@ abstract class AbstractFactory implements FactoryInterface
         $this->callAfterCreating($entities);
 
         return $entities;
+    }
+
+    public function makeOne(): object
+    {
+        $entity = $this->object([$this, 'definition']);
+        if (\is_array($entity)) {
+            $entity = \array_shift($entity);
+        }
+
+        $this->callAfterCreating([$entity]);
+
+        return $entity;
     }
 
     public function __get(string $name): array
@@ -79,20 +101,8 @@ abstract class AbstractFactory implements FactoryInterface
         };
     }
 
-    public function createOne(): object
-    {
-        $entity = $this->make([$this, 'definition']);
-        if (\is_array($entity)) {
-            $entity = \array_shift($entity);
-        }
-
-        $this->callAfterCreating([$entity]);
-
-        return $entity;
-    }
-
     /** @internal */
-    private function make(callable $definition): object|array
+    private function object(callable $definition): object|array
     {
         $this->entityFactory->define($this->entity(), $definition);
 
