@@ -9,7 +9,11 @@ use Faker\Generator;
 use Laminas\Hydrator\ReflectionHydrator;
 use Butschster\EntityFaker\Factory;
 use Butschster\EntityFaker\LaminasEntityFactory;
+use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
 
+/**
+ * @property-read $data
+ */
 abstract class AbstractFactory implements FactoryInterface
 {
     /** @internal */
@@ -67,6 +71,14 @@ abstract class AbstractFactory implements FactoryInterface
         return $entities;
     }
 
+    public function __get(string $name): array
+    {
+        return match ($name) {
+            'data' => $this->raw([$this, 'definition']),
+            default => throw new FactoryException('Undefined magic property.')
+        };
+    }
+
     public function createOne(): object
     {
         $entity = $this->make([$this, 'definition']);
@@ -85,6 +97,16 @@ abstract class AbstractFactory implements FactoryInterface
         $this->entityFactory->define($this->entity(), $definition);
 
         return $this->entityFactory->of($this->entity())->times($this->amount)->make($this->replaces);
+    }
+
+    /** @internal */
+    private function raw(callable $definition): array
+    {
+        $this->entityFactory->define($this->entity(), $definition);
+
+        $data = $this->entityFactory->of($this->entity())->times($this->amount)->raw($this->replaces);
+
+        return \array_is_list($data) ? $data[0] : $data;
     }
 
     /** @internal */

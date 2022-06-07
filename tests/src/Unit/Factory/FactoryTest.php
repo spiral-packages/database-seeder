@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Factory;
 
 use PHPUnit\Framework\TestCase;
+use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
 use Tests\App\Database\Comment;
 use Tests\App\Database\Post;
 use Tests\App\Database\User;
@@ -72,5 +73,21 @@ final class FactoryTest extends TestCase
         $post = PostFactory::new(['content' => 'changed by replaces array'])->createOne();
 
         $this->assertSame('changed by replaces array', $post->content);
+    }
+
+    public function testRawData(): void
+    {
+        $post = PostFactory::new()->data;
+        $post2 = PostFactory::new()->data;
+
+        $this->assertIsArray($post);
+        $this->assertIsArray($post2);
+        $this->assertNotSame($post['content'], $post2['content']);
+    }
+
+    public function testUndefinedProperty(): void
+    {
+        $this->expectException(FactoryException::class);
+        PostFactory::new()->test;
     }
 }
