@@ -68,7 +68,7 @@ class UserFactory extends AbstractFactory
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
             'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
-            'comments' => CommentFactory::new()->times(3)->create(), // Can use other factories.
+            'comments' => CommentFactory::new()->times(3)->make(), // Can use other factories.
             // Be careful, circular dependencies are not allowed!
         ];
     }
@@ -89,7 +89,7 @@ class UserTableSeeder extends AbstractSeeder
 {
     public function run(): \Generator
     {
-        foreach (UserFactory::new()->times(100)->create() as $user) {
+        foreach (UserFactory::new()->times(100)->make() as $user) {
             yield $user;
         }
     }
