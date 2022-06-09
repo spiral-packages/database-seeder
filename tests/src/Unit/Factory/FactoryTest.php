@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Factory;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Fixture\Entity\Comment;
-use Tests\Fixture\Entity\Post;
-use Tests\Fixture\Entity\User;
-use Tests\Fixture\Factory\CommentFactory;
-use Tests\Fixture\Factory\PostFactory;
-use Tests\Fixture\Factory\UserFactory;
+use Tests\App\Database\Comment;
+use Tests\App\Database\Post;
+use Tests\App\Database\User;
+use Tests\Database\Factory\CommentFactory;
+use Tests\Database\Factory\PostFactory;
+use Tests\Database\Factory\UserFactory;
 
 final class FactoryTest extends TestCase
 {

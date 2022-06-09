@@ -6,7 +6,7 @@ namespace Tests\Functional\Bootloader;
 
 use Spiral\Boot\DirectoriesInterface;
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig;
-use Tests\TestCase;
+use Tests\Functional\TestCase;
 
 final class DefaultConfigurationBootloaderTest extends TestCase
 {

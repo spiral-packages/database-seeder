@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Seeder;
+namespace Tests\Database\Seeder;
 
 use Spiral\DatabaseSeeder\Attribute\Seeder;
 

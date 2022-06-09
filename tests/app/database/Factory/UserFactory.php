@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Factory;
+namespace Tests\Database\Factory;
 
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
-use Tests\Fixture\Entity\User;
+use Tests\App\Database\User;
 
 class UserFactory extends AbstractFactory
 {
@@ -20,6 +20,9 @@ class UserFactory extends AbstractFactory
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
             'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
+            'age' => $this->faker->numberBetween(1, 90),
+            'active' => $this->faker->boolean,
+            'someFloatVal' => $this->faker->randomFloat()
         ];
     }
 }

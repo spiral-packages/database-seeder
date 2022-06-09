@@ -1,65 +1,73 @@
 {
-  "name": "spiral-packages/database-seeder",
-  "description": "The package provides the ability to seed your database with data using seed classes",
-  "keywords": [
-    "spiral-packages",
-    "spiral",
-    "seeder",
-    "database-seeder"
-  ],
-  "homepage": "https://github.com/spiral-packages/database-seeder",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Maxim Smakouz",
-      "email": "m.smakouz@gmail.com",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "php": "^8.1",
-    "cycle/orm": "^2.1",
-    "butschster/entity-faker": "^0.9",
-    "fakerphp/faker": "^1.19",
-    "laminas/laminas-hydrator": "^4.3",
-    "spiral/attributes": "^3.0",
-    "spiral/scaffolder": "^3.0",
-    "doctrine/annotations": "^1.13",
-    "spiral/boot": "^3.0",
-    "spiral/console": "^3.0"
-  },
-  "require-dev": {
-    "spiral/framework": "^3.0",
-    "mockery/mockery": "^1.5",
-    "phpunit/phpunit": "^9.5",
-    "spiral/testing": "^2.0",
-    "vimeo/psalm": "^4.20"
-  },
-  "autoload": {
-    "psr-4": {
-      "Spiral\\DatabaseSeeder\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\App\\": "tests/app",
-      "Tests\\": "tests/src"
-    }
-  },
-  "scripts": {
-    "test": "vendor/bin/phpunit",
-    "psalm": "vendor/bin/psalm --config=psalm.xml ./src"
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "extra": {
-    "spiral": {
-      "bootloaders": [
-        "Spiral\\DatabaseSeeder\\Bootloader\\DatabaseSeederBootloader"
-      ]
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "spiral-packages/database-seeder",
+    "description": "The package provides the ability to seed your database with data using seed classes",
+    "keywords": [
+        "spiral-packages",
+        "spiral",
+        "seeder",
+        "database-seeder"
+    ],
+    "homepage": "https://github.com/spiral-packages/database-seeder",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxim Smakouz",
+            "email": "m.smakouz@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "butschster/entity-faker": "^0.9",
+        "fakerphp/faker": "^1.19",
+        "laminas/laminas-hydrator": "^4.3",
+        "spiral/attributes": "^3.0",
+        "spiral/scaffolder": "^3.0",
+        "doctrine/annotations": "^1.13",
+        "spiral/boot": "^3.0",
+        "spiral/console": "^3.0"
+    },
+    "require-dev": {
+        "spiral/framework": "^3.0",
+        "mockery/mockery": "^1.5",
+        "phpunit/phpunit": "^9.5",
+        "vimeo/psalm": "^4.20",
+        "spiral/cycle-bridge": "^2.0",
+        "spiral/testing": "^2.0"
+    },
+    "autoload": {
+        "files": [
+            "src/polyfill.php"
+        ],
+        "psr-4": {
+            "Spiral\\DatabaseSeeder\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\App\\": "tests/app/src",
+            "Tests\\Database\\": "tests/app/database",
+            "Tests\\": "tests/src"
+        }
+    },
+    "suggest": {
+        "spiral/testing": "To use the Spiral\\DatabaseSeeder\\TestCase class and helpers to test an app with DB",
+        "spiral/cycle-bridge": "For easy database and ORM configuration in a test application"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "psalm": "vendor/bin/psalm --config=psalm.xml ./src"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "spiral": {
+            "bootloaders": [
+                "Spiral\\DatabaseSeeder\\Bootloader\\DatabaseSeederBootloader"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

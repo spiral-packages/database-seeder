@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixture\Factory;
+namespace Tests\Database\Factory;
 
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
-use Tests\Fixture\Entity\Post;
+use Tests\App\Database\Post;
 
 class PostFactory extends AbstractFactory
 {
