@@ -14,6 +14,6 @@ abstract class RefreshDatabaseTest extends TestCase
     // disabling auto executing DB traits
     protected function setUp(): void
     {
-        $this->refreshApp();
+        $this->initApp(static::ENV);
     }
 }
