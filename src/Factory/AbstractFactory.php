@@ -12,6 +12,7 @@ use Butschster\EntityFaker\Factory;
 use Butschster\EntityFaker\LaminasEntityFactory;
 use Spiral\Core\ContainerScope;
 use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
+use Spiral\DatabaseSeeder\Factory\Exception\OutsideScopeException;
 
 /**
  * @property-read $data
@@ -123,8 +124,17 @@ abstract class AbstractFactory implements FactoryInterface
 
     private function storeEntities(array $entities): void
     {
+        $container = ContainerScope::getContainer();
+        if ($container === null) {
+            throw new OutsideScopeException(\sprintf(
+                'The container is not available. Make sure [%s] method is running in the ContainerScope.',
+                __METHOD__
+            ));
+        }
+
         /** @var EntityManagerInterface $em */
-        $em = ContainerScope::getContainer()->get(EntityManagerInterface::class);
+        $em = $container->get(EntityManagerInterface::class);
+
         foreach ($entities as $entity) {
             $em->persist($entity);
         }

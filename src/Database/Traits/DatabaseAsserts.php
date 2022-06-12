@@ -10,6 +10,7 @@ use Cycle\ORM\Select\Repository;
 
 trait DatabaseAsserts
 {
+    /** @psalm-param non-empty-string $table */
     public function assertTableExists(string $table): void
     {
         static::assertTrue(
@@ -18,6 +19,7 @@ trait DatabaseAsserts
         );
     }
 
+    /** @psalm-param non-empty-string $table */
     public function assertTableIsNotExists(string $table): void
     {
         static::assertFalse(
@@ -26,6 +28,7 @@ trait DatabaseAsserts
         );
     }
 
+    /** @psalm-param non-empty-string $table */
     public function assertTableCount(string $table, int $count): void
     {
         static::assertSame(
@@ -34,6 +37,7 @@ trait DatabaseAsserts
         );
     }
 
+    /** @psalm-param non-empty-string $table */
     public function assertTableHas(string $table, array $where = []): void
     {
         $select = $this->getContainer()->get(Database::class)->table($table)->select();
@@ -54,6 +58,7 @@ trait DatabaseAsserts
         static::assertSame($count, $repository->select()->count());
     }
 
+    /** @param class-string $entity */
     public function assertTableHasEntity(string $entity, array $where = []): void
     {
         /** @var Repository $repository */
