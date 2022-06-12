@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Factory;
 
+use Cycle\ORM\EntityManagerInterface;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Laminas\Hydrator\ReflectionHydrator;
 use Butschster\EntityFaker\Factory;
 use Butschster\EntityFaker\LaminasEntityFactory;
+use Spiral\Core\ContainerScope;
 use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
 
 /**
@@ -61,12 +63,30 @@ abstract class AbstractFactory implements FactoryInterface
 
     public function create(): array
     {
+        $entities = $this->object([$this, 'definition']);
+        if (!\is_array($entities)) {
+            $entities = [$entities];
+        }
 
+        $this->storeEntities($entities);
+
+        $this->callAfterCreating($entities);
+
+        return $entities;
     }
 
     public function createOne(): object
     {
+        $entity = $this->object([$this, 'definition']);
+        if (\is_array($entity)) {
+            $entity = \array_shift($entity);
+        }
 
+        $this->storeEntities([$entity]);
+
+        $this->callAfterCreating([$entity]);
+
+        return $entity;
     }
 
     public function make(): array
@@ -99,6 +119,16 @@ abstract class AbstractFactory implements FactoryInterface
             'data' => $this->raw([$this, 'definition']),
             default => throw new FactoryException('Undefined magic property.')
         };
+    }
+
+    private function storeEntities(array $entities): void
+    {
+        /** @var EntityManagerInterface $em */
+        $em = ContainerScope::getContainer()->get(EntityManagerInterface::class);
+        foreach ($entities as $entity) {
+            $em->persist($entity);
+        }
+        $em->run();
     }
 
     /** @internal */
