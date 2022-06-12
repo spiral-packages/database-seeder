@@ -26,6 +26,8 @@ abstract class TestCase extends \Spiral\Testing\TestCase
         parent::tearDown();
 
         (new \ReflectionClass(ContainerScope::class))->setStaticPropertyValue('container', null);
+
+        $this->tearDownTraits();
     }
 
     private function setUpTraits(): void
@@ -38,6 +40,14 @@ abstract class TestCase extends \Spiral\Testing\TestCase
         /** @see \Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations */
         if (\method_exists($this, 'runDatabaseMigrations')) {
             $this->runDatabaseMigrations();
+        }
+    }
+
+    private function tearDownTraits(): void
+    {
+        /** @see \Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations */
+        if (\method_exists($this, 'runDatabaseRollback')) {
+            $this->runDatabaseRollback();
         }
     }
 }

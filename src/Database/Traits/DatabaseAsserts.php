@@ -31,9 +31,12 @@ trait DatabaseAsserts
     /** @psalm-param non-empty-string $table */
     public function assertTableCount(string $table, int $count): void
     {
+        $actual = $this->getContainer()->get(Database::class)->table($table)->count();
+
         static::assertSame(
             $count,
-            $this->getContainer()->get(Database::class)->table($table)->count()
+            $actual,
+            \sprintf('Expected %s records in the table [%s], actual are %s.', $count, $table, $actual)
         );
     }
 
@@ -46,7 +49,7 @@ trait DatabaseAsserts
             $select->where($where);
         }
 
-        static::assertTrue($select->count() >= 0);
+        static::assertTrue($select->count() >= 0, \sprintf('Record not found in the table [%s].', $table));
     }
 
     /** @param class-string $entity */
@@ -54,8 +57,13 @@ trait DatabaseAsserts
     {
         /** @var Repository $repository */
         $repository = $this->getContainer()->get(ORM::class)->getRepository($entity);
+        $actual = $repository->select()->count();
 
-        static::assertSame($count, $repository->select()->count());
+        static::assertSame(
+            $count,
+            $actual,
+            \sprintf('Expected %s entities in the table, actual are %s.', $count, $actual)
+        );
     }
 
     /** @param class-string $entity */
@@ -69,6 +77,6 @@ trait DatabaseAsserts
             $select->where($where);
         }
 
-        static::assertTrue($select->count() >= 0);
+        static::assertTrue($select->count() >= 0, \sprintf('Entity [%s] not found.', $entity));
     }
 }
