@@ -15,6 +15,38 @@ trait DatabaseMigrations
      */
     public function runDatabaseMigrations(): void
     {
+        $this->runCommand('cycle:migrate', ['--run' => true]);
+
+        /* TODO wait resolving bug with finalizers
+        $directory = $this->getMigrationsDirectory();
+        $self = $this;
+        $this->getContainer()->get(FinalizerInterface::class)->addFinalizer(static function () use($self, $directory) {
+            $self->runCommand('migrate:rollback', ['--all' => true]);
+
+            $self->cleanupDirectories($directory);
+
+            DatabaseState::$migrated = false;
+        });
+        */
+    }
+
+    public function runDatabaseRollback(): void
+    {
+        $directory = $this->getMigrationsDirectory();
+
+        $this->runCommand('migrate:rollback', ['--all' => true]);
+
+        $this->cleanupDirectories($directory);
+
+        DatabaseState::$migrated = false;
+    }
+
+    /**
+     * @invisible
+     * @internal
+     */
+    private function getMigrationsDirectory(): string
+    {
         $config = $this->getConfig('migration');
         if (empty($config['directory'])) {
             throw new DatabaseMigrationsException(
@@ -28,15 +60,6 @@ trait DatabaseMigrations
             );
         }
 
-        $this->runCommand('cycle:migrate', ['--run' => true]);
-
-        $self = $this;
-        $this->getContainer()->get(FinalizerInterface::class)->addFinalizer(static function () use($self, $config) {
-            $self->runCommand('migrate:rollback', ['--all' => true]);
-
-            $self->cleanupDirectories($config['directory']);
-
-            DatabaseState::$migrated = false;
-        });
+        return $config['directory'];
     }
 }

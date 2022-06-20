@@ -4,13 +4,30 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder;
 
+use Spiral\Core\ContainerScope;
+use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
+
 abstract class TestCase extends \Spiral\Testing\TestCase
 {
+    use DatabaseAsserts;
+
     protected function setUp(): void
     {
         parent::setUp();
 
+        // Bind container to ContainerScope
+        (new \ReflectionClass(ContainerScope::class))->setStaticPropertyValue('container', $this->getContainer());
+
         $this->setUpTraits();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        (new \ReflectionClass(ContainerScope::class))->setStaticPropertyValue('container', null);
+
+        $this->tearDownTraits();
     }
 
     private function setUpTraits(): void
@@ -23,6 +40,14 @@ abstract class TestCase extends \Spiral\Testing\TestCase
         /** @see \Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations */
         if (\method_exists($this, 'runDatabaseMigrations')) {
             $this->runDatabaseMigrations();
+        }
+    }
+
+    private function tearDownTraits(): void
+    {
+        /** @see \Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations */
+        if (\method_exists($this, 'runDatabaseRollback')) {
+            $this->runDatabaseRollback();
         }
     }
 }

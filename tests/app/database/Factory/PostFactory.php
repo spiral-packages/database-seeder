@@ -18,9 +18,9 @@ class PostFactory extends AbstractFactory
     {
         return [
             'content' => $this->faker->randomHtml(),
-            'author' => UserFactory::new()->createOne(),
+            'author' => UserFactory::new()->makeOne(),
             'publishedAt' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
-            'comments' => CommentFactory::new()->times(3)->create(),
+            'comments' => CommentFactory::new()->times(3)->make(),
         ];
     }
 }

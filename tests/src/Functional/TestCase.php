@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
-use Cycle\Database\Database;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
 use Spiral\Cycle\Bootloader as CycleOrmBridge;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
@@ -50,21 +49,5 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
             CycleOrmBridge\CommandBootloader::class,
             DatabaseSeederBootloader::class,
         ];
-    }
-
-    public function assertTableExists(string $table): void
-    {
-        static::assertTrue(
-            $this->getContainer()->get(Database::class)->hasTable($table),
-            \sprintf('Table [%s] does not exist.', $table)
-        );
-    }
-
-    public function assertTableIsNotExists(string $table): void
-    {
-        static::assertFalse(
-            $this->getContainer()->get(Database::class)->hasTable($table),
-            \sprintf('Table [%s] exists.', $table)
-        );
     }
 }

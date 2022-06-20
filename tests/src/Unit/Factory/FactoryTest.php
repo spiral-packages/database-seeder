@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Factory;
 
 use PHPUnit\Framework\TestCase;
+use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
 use Tests\App\Database\Comment;
 use Tests\App\Database\Post;
 use Tests\App\Database\User;
@@ -16,9 +17,9 @@ final class FactoryTest extends TestCase
 {
     public function testCreateEntity(): void
     {
-        $user = UserFactory::new()->createOne();
-        $post = PostFactory::new()->createOne();
-        $comment = CommentFactory::new()->createOne();
+        $user = UserFactory::new()->makeOne();
+        $post = PostFactory::new()->makeOne();
+        $comment = CommentFactory::new()->makeOne();
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertIsString($user->firstName);
@@ -41,7 +42,7 @@ final class FactoryTest extends TestCase
 
     public function testCreateMultiple(): void
     {
-        $users = UserFactory::new()->times(2)->create();
+        $users = UserFactory::new()->times(2)->make();
 
         $this->assertCount(2, $users);
 
@@ -55,22 +56,38 @@ final class FactoryTest extends TestCase
 
     public function testCreateNullableNotFilled(): void
     {
-        $user = UserFactory::new()->createOne();
+        $user = UserFactory::new()->makeOne();
 
         $this->assertNull($user->city);
     }
 
     public function testAfterCreateCallback(): void
     {
-        $post = PostFactory::new()->afterCreate(fn(Post $post) => $post->content = 'changed by callback')->createOne();
+        $post = PostFactory::new()->afterCreate(fn(Post $post) => $post->content = 'changed by callback')->makeOne();
 
         $this->assertSame('changed by callback', $post->content);
     }
 
     public function testCreateWithReplaces(): void
     {
-        $post = PostFactory::new(['content' => 'changed by replaces array'])->createOne();
+        $post = PostFactory::new(['content' => 'changed by replaces array'])->makeOne();
 
         $this->assertSame('changed by replaces array', $post->content);
+    }
+
+    public function testRawData(): void
+    {
+        $post = PostFactory::new()->data;
+        $post2 = PostFactory::new()->data;
+
+        $this->assertIsArray($post);
+        $this->assertIsArray($post2);
+        $this->assertNotSame($post['content'], $post2['content']);
+    }
+
+    public function testUndefinedProperty(): void
+    {
+        $this->expectException(FactoryException::class);
+        PostFactory::new()->test;
     }
 }

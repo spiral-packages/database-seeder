@@ -18,9 +18,9 @@ class CommentSeeder extends AbstractSeeder
     public function run(): \Generator
     {
         /** @var Post $post */
-        $post = PostFactory::new()->createOne();
+        $post = PostFactory::new()->makeOne();
         /** @var User $user */
-        $user = UserFactory::new()->createOne();
+        $user = UserFactory::new()->makeOne();
 
         $comment = new Comment();
         $comment->post = $post;

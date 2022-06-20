@@ -11,8 +11,8 @@ The package provides the ability to seed your database with data using seed clas
 
 Make sure that your server is configured with following PHP version and extensions:
 
-- PHP 8.0+
-- Spiral framework 2.9+
+- PHP 8.1+
+- Spiral framework ^3.0
  
 ## Installation
 
@@ -30,8 +30,8 @@ protected const LOAD = [
     \Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader::class,
 ];
 ```
-
-> Note: if you are using [`spiral-packages/discoverer`](https://github.com/spiral-packages/discoverer), 
+> **Note**
+> if you are using [`spiral-packages/discoverer`](https://github.com/spiral-packages/discoverer), 
 > you don't need to register bootloader by yourself.
 
 ## Usage
@@ -68,14 +68,48 @@ class UserFactory extends AbstractFactory
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
             'birthday' => \DateTimeImmutable::createFromMutable($this->faker->dateTime()),
-            'comments' => CommentFactory::new()->times(3)->create(), // Can use other factories.
+            'comments' => CommentFactory::new()->times(3)->make(), // Can use other factories.
             // Be careful, circular dependencies are not allowed!
         ];
     }
 }
 ```
+A factory can be created using the method `new`.
+```php
+$factory = UserFactory::new();
+```
+A factory has several useful methods:
+- `create` - Creates an array of entities, stores them in the database, and returns them for further use in code.
+- `createOne` - Creates one entity, stores it in the database, and returns it for further use in code.
+- `make` - Creates an array of entities and returns them for further use in code.
+- `makeOne` - Creates one entity and returns it for further use in code.
+- `raw` - or `data` property. Used to get an array of entity data (raw data, without entity creation).
 
-After that, you can use this factory in your code. For example:
+A few examples:
+```php
+// 10 users stored in the database
+$users = UserFactory::new()->times(10)->create();
+
+// one user stored in the database
+$user = UserFactory::new()->createOne();
+
+// 10 users. Entities will not be saved to the database. Only returned for future use
+$users = UserFactory::new()->times(10)->make();
+
+// one user. Will not be saved to the database
+$user = UserFactory::new()->makeOne();
+
+// array with raw user data
+$data = UserFactory::new()->raw();
+// or
+$data = UserFactory::new()->data;
+```
+
+### Seeding
+The package provides the ability to seed the database with test data. To do this, create a Seeder class and extend it 
+from the `Spiral\DatabaseSeeder\Seeder\AbstractSeeder` class. Implement the `run` method. 
+This method should return a generator with entities to store in the database.
+
 ```php
 <?php
 
@@ -89,12 +123,103 @@ class UserTableSeeder extends AbstractSeeder
 {
     public function run(): \Generator
     {
-        foreach (UserFactory::new()->times(100)->create() as $user) {
+        foreach (UserFactory::new()->times(100)->make() as $user) {
             yield $user;
         }
     }
 }
 ```
+## Console commands
+The package provides console commands to quickly create a factory, seeder, and perform seeding of a test database 
+using seeder classes.
+- The `Spiral\DatabaseSeeder\Console\Command\FactoryCommand` console command is used to create a factory. 
+  The name of the factory is passed as an argument.
+```bash
+php ./app.php create:factory UserFactory
+```
+- The `Spiral\DatabaseSeeder\Console\Command\SeederCommand` console command is used to create a seeder.
+  The name of the seeder is passed as an argument.
+```bash
+php ./app.php create:seeder UserSeeder
+```
+- The `Spiral\DatabaseSeeder\Console\Command\SeedCommand` console command is used to perform seeding of a test database
+  using seeder classes. 
+```bash
+php ./app.php db:seed
+```
+
+## Testing applications with database
+The package provides several additional features for easier testing of applications with databases.
+
+> **Note**
+Important! Be sure to set up a test database in the test application. Never use a production database for testing!
+
+To use these features, your application's tests must be written using the `spiral/testing` package.
+
+First of all, inherit the base test class that is used in tests using the new functionality.
+This will make it possible to use traits to simplify working with the database in tests and provide additional methods for testing.
+Example:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
+{
+}
+```
+
+Next, you can add some traits:
+
+### RefreshDatabase
+This trait creates the database structure on a first run and wraps the test execution into a transaction. 
+After the test runs, the transaction is rollback, but the database structure is saved for use in the next test.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
+
+abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
+{
+    use RefreshDatabase;
+}
+```
+
+### DatabaseMigrations
+This trait creates a database structure, performs a test, and completely rollback the state of the database.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations;
+
+abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
+{
+    use DatabaseMigrations;
+}
+```
+
+### DatabaseAsserts
+This trait is enabled by default in `Spiral\DatabaseSeeder\TestCase`. Provides additional assertions for 
+checking data in a database. Available methods:
+
+- `assertTableExists` - Checks if a table exists in a database
+- `assertTableIsNotExists` - Checks if the table is not in the database
+- `assertTableCount` - Checks if a table has a certain number of records
+- `assertTableHas` - Checks if there is a record in a table that matches a certain condition
+- `assertEntitiesCount` - same as `assertTableCount`, but checks by entity, not by table name
+- `assertTableHasEntity` - same as `assertTableHas`, but checks by entity, not by table name
 
 ## Testing
 
