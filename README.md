@@ -129,6 +129,25 @@ class UserTableSeeder extends AbstractSeeder
     }
 }
 ```
+## Console commands
+The package provides console commands to quickly create a factory, seeder, and perform seeding of a test database 
+using seeder classes.
+- The `Spiral\DatabaseSeeder\Console\Command\FactoryCommand` console command is used to create a factory. 
+  The name of the factory is passed as an argument.
+```bash
+php ./app.php create:factory UserFactory
+```
+- The `Spiral\DatabaseSeeder\Console\Command\SeederCommand` console command is used to create a seeder.
+  The name of the seeder is passed as an argument.
+```bash
+php ./app.php create:seeder UserSeeder
+```
+- The `Spiral\DatabaseSeeder\Console\Command\SeedCommand` console command is used to perform seeding of a test database
+  using seeder classes. 
+```bash
+php ./app.php db:seed
+```
+
 ## Testing applications with database
 The package provides several additional features for easier testing of applications with databases.
 
