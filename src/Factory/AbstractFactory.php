@@ -114,6 +114,15 @@ abstract class AbstractFactory implements FactoryInterface
         return $entity;
     }
 
+    public function raw(callable $definition): array
+    {
+        $this->entityFactory->define($this->entity(), $definition);
+
+        $data = $this->entityFactory->of($this->entity())->times($this->amount)->raw($this->replaces);
+
+        return \array_is_list($data) ? $data[0] : $data;
+    }
+
     public function __get(string $name): array
     {
         return match ($name) {
@@ -147,16 +156,6 @@ abstract class AbstractFactory implements FactoryInterface
         $this->entityFactory->define($this->entity(), $definition);
 
         return $this->entityFactory->of($this->entity())->times($this->amount)->make($this->replaces);
-    }
-
-    /** @internal */
-    private function raw(callable $definition): array
-    {
-        $this->entityFactory->define($this->entity(), $definition);
-
-        $data = $this->entityFactory->of($this->entity())->times($this->amount)->raw($this->replaces);
-
-        return \array_is_list($data) ? $data[0] : $data;
     }
 
     /** @internal */
