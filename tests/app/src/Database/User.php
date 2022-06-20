@@ -28,7 +28,7 @@ class User
     #[Column(type: 'int')]
     public int $age;
 
-    #[Column(type: 'bool')]
+    #[Column(type: 'boolean', typecast: 'bool')]
     public bool $active;
 
     #[Column(type: 'float')]

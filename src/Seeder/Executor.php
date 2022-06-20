@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Seeder;
 
+use Cycle\Database\Injection\Parameter;
 use Cycle\ORM\EntityManagerInterface;
+use Cycle\ORM\ORM;
+use Cycle\ORM\SchemaInterface;
 
 class Executor implements ExecutorInterface
 {
     private array $afterSeed = [];
 
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private ORM $orm
     ) {
     }
 
@@ -38,12 +42,29 @@ class Executor implements ExecutorInterface
     private function seed(SeederInterface $seeder): void
     {
         foreach ($seeder->run() as $entity) {
-            $this->entityManager->persist($entity);
+            if ($this->isNotExists($entity)) {
+                $this->entityManager->persist($entity);
+            }
         }
     }
 
     private function callAfterSeed(SeederInterface $seeder): void
     {
         \array_map(static fn(callable $callable) => $callable($seeder), $this->afterSeed);
+    }
+
+    private function isNotExists(object $entity): bool
+    {
+        $keys = $this->orm->getSchema()->define($this->orm->resolveRole($entity), SchemaInterface::PRIMARY_KEY);
+
+        $values = [];
+        foreach ($keys as $key) {
+            $ref = new \ReflectionProperty($entity, $key);
+            if ($ref->isInitialized($entity)) {
+                $values[$key] = $ref->getValue($entity);
+            }
+        }
+
+        return $this->orm->getRepository($entity)->findByPK(new Parameter($values)) === null;
     }
 }
