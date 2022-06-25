@@ -23,6 +23,7 @@ abstract class AbstractFactory implements FactoryInterface
     private Factory $entityFactory;
     private int $amount = 1;
     private array $afterCreate = [];
+    private array $afterMake = [];
     protected Generator $faker;
 
     private function __construct(
@@ -62,6 +63,13 @@ abstract class AbstractFactory implements FactoryInterface
         return $this;
     }
 
+    public function afterMake(callable $afterMake): self
+    {
+        $this->afterMake[] = $afterMake;
+
+        return $this;
+    }
+
     public function create(): array
     {
         $entities = $this->object([$this, 'definition']);
@@ -97,8 +105,6 @@ abstract class AbstractFactory implements FactoryInterface
             $entities = [$entities];
         }
 
-        $this->callAfterCreating($entities);
-
         return $entities;
     }
 
@@ -108,8 +114,6 @@ abstract class AbstractFactory implements FactoryInterface
         if (\is_array($entity)) {
             $entity = \array_shift($entity);
         }
-
-        $this->callAfterCreating([$entity]);
 
         return $entity;
     }
@@ -154,6 +158,10 @@ abstract class AbstractFactory implements FactoryInterface
     private function object(callable $definition): object|array
     {
         $this->entityFactory->define($this->entity(), $definition);
+
+        foreach ($this->afterMake as $afterMakeCallable){
+            $this->entityFactory->afterMaking($this->entity(), $afterMakeCallable);
+        }
 
         return $this->entityFactory->of($this->entity())->times($this->amount)->make($this->replaces);
     }

@@ -61,9 +61,9 @@ final class FactoryTest extends TestCase
         $this->assertNull($user->city);
     }
 
-    public function testAfterCreateCallback(): void
+    public function testAfterMakeCallback(): void
     {
-        $post = PostFactory::new()->afterCreate(fn(Post $post) => $post->content = 'changed by callback')->makeOne();
+        $post = PostFactory::new()->afterMake(fn(Post $post) => $post->content = 'changed by callback')->makeOne();
 
         $this->assertSame('changed by callback', $post->content);
     }

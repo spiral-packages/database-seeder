@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Functional\Driver\Common\Factory;
 
 use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
+use Tests\App\Database\Post;
+use Tests\Database\Factory\PostFactory;
 use Tests\Database\Factory\UserFactory;
 use Tests\Functional\TestCase;
 
@@ -30,5 +32,12 @@ abstract class AbstractFactoryTest extends TestCase
 
         $this->assertTableCount('users', 1);
         $this->assertTableHas('users', ['id' => $user->id]);
+    }
+
+    public function testAfterCreateCallback(): void
+    {
+        $post = PostFactory::new()->afterCreate(fn(Post $post) => $post->content = 'changed by callback')->createOne();
+
+        $this->assertSame('changed by callback', $post->content);
     }
 }
