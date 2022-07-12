@@ -28,6 +28,7 @@
         "spiral/console": "^3.0"
     },
     "require-dev": {
+        "doctrine/collections": "^1.6",
         "spiral/framework": "^3.0",
         "mockery/mockery": "^1.5",
         "phpunit/phpunit": "^9.5",

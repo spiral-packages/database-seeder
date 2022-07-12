@@ -8,6 +8,7 @@ use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Relation\HasMany;
 use Cycle\Annotated\Annotation\Relation\BelongsTo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity(table: 'posts')]
 class Post

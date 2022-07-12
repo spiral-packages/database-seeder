@@ -6,6 +6,8 @@ namespace Tests\App\Database;
 
 use Cycle\Annotated\Annotation\Column;
 use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation\HasMany;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Entity(table: 'users')]
 class User
@@ -33,4 +35,13 @@ class User
 
     #[Column(type: 'float')]
     public float $someFloatVal;
+
+    /** @var ArrayCollection<array-key, Post> */
+    #[HasMany(target: Post::class, innerKey: 'id', outerKey: 'author_id', fkCreate: false)]
+    public ArrayCollection $posts;
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 }
