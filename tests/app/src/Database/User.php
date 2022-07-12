@@ -37,7 +37,7 @@ class User
     public float $someFloatVal;
 
     /** @var ArrayCollection<array-key, Post> */
-    #[HasMany(target: Post::class, innerKey: 'id', outerKey: 'author_id', fkCreate: false)]
+    #[HasMany(target: Post::class, innerKey: 'id', outerKey: 'author_id', fkCreate: false, collection: 'doctrine')]
     public ArrayCollection $posts;
 
     public function __construct()
