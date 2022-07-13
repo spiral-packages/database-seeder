@@ -10,7 +10,7 @@ use Spiral\Boot\EnvironmentInterface;
 use Spiral\Config\ConfiguratorInterface;
 use Spiral\DatabaseSeeder\Config\DatabaseSeederConfig as Config;
 
-class ConfigurationBootloader extends Bootloader
+final class ConfigurationBootloader extends Bootloader
 {
     public function __construct(
         private ConfiguratorInterface $config,
@@ -18,7 +18,7 @@ class ConfigurationBootloader extends Bootloader
     ) {
     }
 
-    public function boot(EnvironmentInterface $env): void
+    public function init(EnvironmentInterface $env): void
     {
         $this->initConfig($env);
     }

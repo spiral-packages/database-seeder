@@ -11,8 +11,8 @@ The package provides the ability to seed your database with data using seed clas
 
 Make sure that your server is configured with following PHP version and extensions:
 
-- PHP 8.0+
-- Spiral framework 2.9+
+- PHP 8.1+
+- Spiral framework 3.0+
  
 ## Installation
 
@@ -62,6 +62,34 @@ class UserFactory extends AbstractFactory
         return User::class;
     }
 
+    public function makeEntity(array $definition): User
+    {
+        return new User($definition['username']);
+    }
+
+    public function admin(): self
+    {
+        return $this->state(fn(\Faker\Generator $faker, array $definition) => [
+            'admin' => true,
+        ]);
+    }
+
+    public function fromCity(string $city): self
+    {
+        return $this->state(fn(\Faker\Generator $faker, array $definition) => [
+            'city' => $city,
+        ]);
+    }
+
+    public function withBirthday(\DateTimeImmutable $date): self
+    {
+        return $this->entityState(static function (User $user) use ($date) {
+            $user->birthday = $date;
+
+            return $user;
+        });
+    }
+
     public function definition(): array
     {
         return [
@@ -92,6 +120,24 @@ class UserTableSeeder extends AbstractSeeder
         foreach (UserFactory::new()->times(100)->create() as $user) {
             yield $user;
         }
+        
+        yield UserFactory::new()
+            ->state(static fn(\Faker\Generator $faker) => ['admin' => $faker->bool])
+            ->createOne();
+        
+        yield UserFactory::new()
+            ->entityState(static function(User $user) {
+                return $user->markAsDeleted();
+            })
+            ->createOne();
+        
+        yield UserFactory::new()->admin()->createOne();
+        
+        yield UserFactory::new()->fromCity('New York')->createOne();
+        
+        yield UserFactory::new()
+            ->withBirthday(new \DateTimeImmutable('2010-01-01 00:00:00'))
+            ->createOne();
     }
 }
 ```

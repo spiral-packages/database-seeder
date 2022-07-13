@@ -11,7 +11,7 @@ class Executor implements ExecutorInterface
     private array $afterSeed = [];
 
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 

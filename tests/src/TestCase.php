@@ -24,16 +24,4 @@ class TestCase extends \Spiral\Testing\TestCase
             DatabaseSeederBootloader::class,
         ];
     }
-
-    /**
-     * @return AbstractKernel|TestableKernelInterface
-     * @throws \Throwable
-     */
-    public function createAppInstance(): TestableKernelInterface
-    {
-        return TestApp::createWithBootloaders(
-            $this->defineBootloaders(),
-            $this->defineDirectories($this->rootDirectory())
-        );
-    }
 }

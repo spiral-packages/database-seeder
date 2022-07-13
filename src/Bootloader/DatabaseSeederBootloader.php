@@ -9,7 +9,7 @@ use Spiral\Boot\Bootloader\Bootloader;
 /**
  * Contains all package bootloaders
  */
-class DatabaseSeederBootloader extends Bootloader
+final class DatabaseSeederBootloader extends Bootloader
 {
     protected const DEPENDENCIES = [
         ConfigurationBootloader::class,

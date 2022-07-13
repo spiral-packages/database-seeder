@@ -14,6 +14,13 @@ class CommentFactory extends AbstractFactory
         return Comment::class;
     }
 
+    public function makeEntity(array $definition): Comment
+    {
+        return new Comment(
+            $definition['text']
+        );
+    }
+
     public function definition(): array
     {
         return [

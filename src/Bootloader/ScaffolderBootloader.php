@@ -9,25 +9,25 @@ use Spiral\DatabaseSeeder\Scaffolder\Declaration;
 use Spiral\Boot\Bootloader\Bootloader;
 use Spiral\Scaffolder\Bootloader\ScaffolderBootloader as BaseScaffolderBootloader;
 
-class ScaffolderBootloader extends Bootloader
+final class ScaffolderBootloader extends Bootloader
 {
     public const DEPENDENCIES = [
         ConfigurationBootloader::class,
         BaseScaffolderBootloader::class,
     ];
 
-    public function boot(BaseScaffolderBootloader $scaffolder, DatabaseSeederConfig $config): void
+    public function init(BaseScaffolderBootloader $scaffolder, DatabaseSeederConfig $config): void
     {
         $scaffolder->addDeclaration('factory', [
             'namespace' => $config->getFactoriesNamespace(),
-            'postfix'   => 'Factory',
-            'class'     => Declaration\FactoryDeclaration::class,
+            'postfix' => 'Factory',
+            'class' => Declaration\FactoryDeclaration::class,
         ]);
 
         $scaffolder->addDeclaration('seeder', [
             'namespace' => '',
-            'postfix'   => 'Seeder',
-            'class'     => Declaration\SeederDeclaration::class,
+            'postfix' => 'Seeder',
+            'class' => Declaration\SeederDeclaration::class,
         ]);
     }
 }
