@@ -15,9 +15,6 @@ class Post
     #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: 'text')]
-    public string $content;
-
     #[BelongsTo(target: User::class, fkCreate: false)]
     public User $author;
 
@@ -27,4 +24,10 @@ class Post
     /** @var Comment[] */
     #[HasMany(target: Comment::class, innerKey: 'id', outerKey: 'post_id', fkCreate: false)]
     public array $comments = [];
+
+    public function __construct(
+        #[Column(type: 'text')]
+        public string $content
+    ) {
+    }
 }

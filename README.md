@@ -61,6 +61,32 @@ class UserFactory extends AbstractFactory
     {
         return User::class;
     }
+    
+    public function makeEntity(array $definition): User
+    {
+        return new User($definition['username']);
+    }
+    public function admin(): self
+    {
+        return $this->state(fn(\Faker\Generator $faker, array $definition) => [
+            'admin' => true,
+        ]);
+    }
+    
+    public function fromCity(string $city): self
+    {
+        return $this->state(fn(\Faker\Generator $faker, array $definition) => [
+            'city' => $city,
+        ]);
+    }
+    
+    public function withBirthday(\DateTimeImmutable $date): self
+    {
+        return $this->entityState(static function (User $user) use ($date) {
+            $user->birthday = $date;
+            return $user;
+        });
+    }
 
     public function definition(): array
     {
@@ -103,6 +129,25 @@ $user = UserFactory::new()->makeOne();
 $data = UserFactory::new()->raw();
 // or
 $data = UserFactory::new()->data;
+
+// Create user with state based on attributes
+$user = UserFactory::new()
+    ->state(static fn(\Faker\Generator $faker) => ['admin' => $faker->bool])
+    ->createOne();
+
+// Create user with state based on entity object
+$user = UserFactory::new()
+    ->entityState(static function(User $user) {
+        return $user->markAsDeleted();
+    })
+    ->createOne();
+
+// Create user with state from UserFactory class
+$user = UserFactory::new()->admin()->createOne();
+$user = UserFactory::new()->fromCity('New York')->createOne();
+$user = UserFactory::new()
+    ->withBirthday(new \DateTimeImmutable('2010-01-01 00:00:00'))
+    ->createOne();
 ```
 
 ### Seeding

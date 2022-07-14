@@ -14,6 +14,41 @@ class UserFactory extends AbstractFactory
         return User::class;
     }
 
+    public function makeEntity(array $definition): User
+    {
+        return new User($definition['firstName'], $definition['lastName'],);
+    }
+
+    public function admin(): self
+    {
+        return $this->state(fn() => [
+            'admin' => true,
+        ]);
+    }
+
+    public function guest(): self
+    {
+        return $this->state(fn() => [
+            'admin' => false,
+        ]);
+    }
+
+    public function fromCity(string $city): self
+    {
+        return $this->state(fn() => [
+            'city' => $city,
+        ]);
+    }
+
+    public function birthday(\DateTimeImmutable $date): self
+    {
+        return $this->entityState(static function (User $user) use ($date) {
+            $user->birthday = $date;
+
+            return $user;
+        });
+    }
+
     public function definition(): array
     {
         return [
