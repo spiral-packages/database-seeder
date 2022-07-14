@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Console\Command;
 
 use Spiral\Console\Command;
+use Spiral\Console\Confirmation\ApplicationInProduction;
 use Spiral\DatabaseSeeder\Seeder\Executor;
 use Spiral\DatabaseSeeder\Seeder\Locator;
 use Spiral\DatabaseSeeder\Seeder\SeederInterface;
@@ -21,8 +22,15 @@ final class SeedCommand extends Command
         ['force', InputArgument::OPTIONAL, 'Force the operation to run when in production', null],
     ];
 
-    public function perform(Locator $locator, Executor $executor): int
-    {
+    public function perform(
+        ApplicationInProduction $confirmation,
+        Locator $locator,
+        Executor $executor
+    ): int {
+        if (! $confirmation->confirmToProceed()) {
+            return self::FAILURE;
+        }
+
         /** @psalm-suppress PossiblyNullArgument */
         $io = new SymfonyStyle($this->input, $this->output);
 
