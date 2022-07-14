@@ -49,6 +49,7 @@ abstract class AbstractFactory implements FactoryInterface
             $this->faker
         );
     }
+
     abstract public function makeEntity(array $definition): object;
 
     /** @psalm-return class-string */

@@ -66,6 +66,7 @@ class UserFactory extends AbstractFactory
     {
         return new User($definition['username']);
     }
+
     public function admin(): self
     {
         return $this->state(fn(\Faker\Generator $faker, array $definition) => [
