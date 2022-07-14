@@ -10,7 +10,6 @@ use Spiral\DatabaseSeeder\Seeder\Executor;
 use Spiral\DatabaseSeeder\Seeder\Locator;
 use Spiral\DatabaseSeeder\Seeder\SeederInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class SeedCommand extends Command
 {
@@ -31,20 +30,17 @@ final class SeedCommand extends Command
             return self::FAILURE;
         }
 
-        /** @psalm-suppress PossiblyNullArgument */
-        $io = new SymfonyStyle($this->input, $this->output);
-
         $seeders = $locator->findSeeders($this->argument('class'));
 
         $executor->afterSeed(
-            static fn(SeederInterface $seeder) => $io->info(
+            static fn(SeederInterface $seeder) => $this->output->info(
                 \sprintf('Seeding [%s] completed successfully.', $seeder::class)
             )
         );
 
-        $executor->execute($io->progressIterate($seeders));
+        $executor->execute($this->output->progressIterate($seeders));
 
-        $io->success('Database seeding completed successfully.');
+        $this->output->success('Database seeding completed successfully.');
 
         return self::SUCCESS;
     }
