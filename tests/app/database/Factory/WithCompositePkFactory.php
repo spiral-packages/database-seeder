@@ -22,4 +22,9 @@ class WithCompositePkFactory extends AbstractFactory
             'content' => $this->faker->sentence,
         ];
     }
+
+    public function makeEntity(array $definition): object
+    {
+        return new WithCompositePk();
+    }
 }
