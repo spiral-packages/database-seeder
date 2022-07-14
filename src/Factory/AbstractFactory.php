@@ -6,6 +6,7 @@ namespace Spiral\DatabaseSeeder\Factory;
 
 use Butschster\EntityFaker\EntityFactory\ClosureStrategy;
 use Butschster\EntityFaker\EntityFactory\InstanceWithoutConstructorStrategy;
+use Closure;
 use Cycle\ORM\EntityManagerInterface;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -23,11 +24,11 @@ abstract class AbstractFactory implements FactoryInterface
 {
     /** @internal */
     private Factory $entityFactory;
-    /** @var positive-int */
+    /** @psalm-var positive-int */
     private int $amount = 1;
-    /** @var array<Closure> */
+    /** @var array<Closure|callable> */
     private array $afterCreate = [];
-    /** @var array<Closure> */
+    /** @var array<Closure|callable> */
     private array $afterMake = [];
     protected Generator $faker;
     /** @var array<Closure> */
@@ -67,14 +68,14 @@ abstract class AbstractFactory implements FactoryInterface
         return $this;
     }
 
-    public function state(\Closure $state): self
+    public function state(Closure $state): self
     {
         $this->states[] = $state;
 
         return $this;
     }
 
-    public function entityState(\Closure $state): self
+    public function entityState(Closure $state): self
     {
         $this->entityStates[] = $state;
 
@@ -143,7 +144,7 @@ abstract class AbstractFactory implements FactoryInterface
         return $entity;
     }
 
-    public function raw(\Closure $definition): array
+    public function raw(Closure $definition): array
     {
         $this->entityFactory->define($this->entity(), $definition);
 
@@ -180,7 +181,7 @@ abstract class AbstractFactory implements FactoryInterface
     }
 
     /** @internal */
-    private function object(\Closure $definition): object|array
+    private function object(Closure $definition): object|array
     {
         $this->entityFactory
             ->creationStrategy(
