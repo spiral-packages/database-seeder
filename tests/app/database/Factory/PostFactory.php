@@ -14,6 +14,13 @@ class PostFactory extends AbstractFactory
         return Post::class;
     }
 
+    public function makeEntity(array $definition): Post
+    {
+        return new Post(
+            $definition['content']
+        );
+    }
+
     public function definition(): array
     {
         return [

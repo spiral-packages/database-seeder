@@ -13,6 +13,7 @@ interface FactoryInterface
 
     public static function new(): static;
 
+    /** @psalm-param positive-int $amount */
     public function times(int $amount): self;
 
     public function create(): array;

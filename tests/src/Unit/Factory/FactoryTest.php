@@ -90,4 +90,22 @@ final class FactoryTest extends TestCase
         $this->expectException(FactoryException::class);
         PostFactory::new()->test;
     }
+
+    public function testStates(): void
+    {
+        $admin = UserFactory::new()->admin()->makeOne();
+        $this->assertTrue($admin->admin);
+
+        $guest = UserFactory::new()->guest()->makeOne();
+        $this->assertFalse($guest->admin);
+
+        $userFromNewYork = UserFactory::new()->fromCity('New York')->makeOne();
+        $this->assertSame('New York', $userFromNewYork->city);
+
+        $user = UserFactory::new()
+            ->birthday($date = new \DateTimeImmutable('2010-01-01 00:00:00'))
+            ->makeOne();
+
+        $this->assertSame($date, $user->birthday);
+    }
 }

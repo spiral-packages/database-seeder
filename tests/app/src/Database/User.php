@@ -13,12 +13,6 @@ class User
     #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: 'string')]
-    public string $firstName;
-
-    #[Column(type: 'string')]
-    public string $lastName;
-
     #[Column(type: 'datetime', nullable: true)]
     public ?\DateTimeImmutable $birthday = null;
 
@@ -33,4 +27,15 @@ class User
 
     #[Column(type: 'float')]
     public float $someFloatVal;
+
+    #[Column(type: 'boolean', typecast: 'bool')]
+    public bool $admin = false;
+
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $firstName,
+        #[Column(type: 'string')]
+        public string $lastName
+    ) {
+    }
 }
