@@ -14,6 +14,9 @@ use Spiral\Scaffolder\Config\ScaffolderConfig;
 use Spiral\Scaffolder\Declaration\DeclarationInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * @property SymfonyStyle $output
+ */
 abstract class AbstractScaffolderCommand extends AbstractCommand
 {
     public function __construct(
@@ -32,10 +35,7 @@ abstract class AbstractScaffolderCommand extends AbstractCommand
         $filename = $this->files->normalizePath($filename);
 
         if ($this->files->exists($filename)) {
-            /** @psalm-suppress PossiblyNullArgument */
-            $io = new SymfonyStyle($this->input, $this->output);
-
-            $io->error(
+            $this->output->error(
                 "Unable to create {$declaration->getClass()->getName()} declaration, file {$filename} already exists."
             );
 
@@ -52,6 +52,6 @@ abstract class AbstractScaffolderCommand extends AbstractCommand
             default => $this->seederConfig->getSeedersDirectory()
         };
 
-        return $dir . FilesInterface::SEPARATOR . $this->config->className($type, $class) . '.php';
+        return $dir.FilesInterface::SEPARATOR.$this->config->className($type, $class).'.php';
     }
 }
