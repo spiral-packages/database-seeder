@@ -12,9 +12,9 @@ use Spiral\Tokenizer\Reflection\ReflectionFile;
 class DirectoryLocator
 {
     public function __construct(
-        private FilesInterface $files,
-        private DatabaseSeederConfig $config,
-        private FactoryInterface $factory
+        private readonly FilesInterface $files,
+        private readonly DatabaseSeederConfig $config,
+        private readonly FactoryInterface $factory
     ) {
     }
 

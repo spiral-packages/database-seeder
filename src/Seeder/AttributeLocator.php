@@ -12,9 +12,9 @@ use Spiral\Tokenizer\ClassesInterface;
 class AttributeLocator
 {
     public function __construct(
-        private ClassesInterface $classesLocator,
-        private ReaderInterface $reader,
-        private FactoryInterface $factory
+        private readonly ClassesInterface $classesLocator,
+        private readonly ReaderInterface $reader,
+        private readonly FactoryInterface $factory
     ) {
     }
 

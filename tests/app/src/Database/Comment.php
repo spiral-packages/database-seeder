@@ -14,9 +14,6 @@ class Comment
     #[Column(type: 'primary')]
     public int $id;
 
-    #[Column(type: 'text')]
-    public string $text;
-
     #[BelongsTo(target: User::class, fkCreate: false)]
     public User $author;
 
@@ -25,4 +22,10 @@ class Comment
 
     #[Column(type: 'datetime')]
     public \DateTimeImmutable $postedAt;
+
+    public function __construct(
+        #[Column(type: 'text')]
+        public string $text
+    ) {
+    }
 }
