@@ -10,7 +10,11 @@ use Spiral\DatabaseSeeder\Seeder\Executor;
 use Spiral\DatabaseSeeder\Seeder\Locator;
 use Spiral\DatabaseSeeder\Seeder\SeederInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * @property SymfonyStyle $output
+ */
 final class SeedCommand extends Command
 {
     protected const NAME = 'db:seed';

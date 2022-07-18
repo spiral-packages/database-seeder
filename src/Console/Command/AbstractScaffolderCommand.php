@@ -12,7 +12,11 @@ use Spiral\Reactor\Writer;
 use Spiral\Scaffolder\Command\AbstractCommand;
 use Spiral\Scaffolder\Config\ScaffolderConfig;
 use Spiral\Scaffolder\Declaration\DeclarationInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * @property SymfonyStyle $output
+ */
 abstract class AbstractScaffolderCommand extends AbstractCommand
 {
     public function __construct(
