@@ -22,7 +22,7 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
 
         $this->cleanUpRuntimeDirectory();
 
-        if (static::ENV['DEFAULT_DB'] === 'mysql') {
+        if (\array_key_exists('DEFAULT_DB', static::ENV) && static::ENV['DEFAULT_DB'] === 'mysql') {
             $manager = $this->getContainer()->get(DatabaseManager::class);
             foreach ($manager->database('mysql')->getTables() as $table) {
                 $schema = $table->getSchema();
