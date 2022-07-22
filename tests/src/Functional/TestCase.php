@@ -22,14 +22,16 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
 
         $this->cleanUpRuntimeDirectory();
 
-        $manager = $this->getContainer()->get(DatabaseManager::class);
-        foreach ($manager->database('mysql')->getTables() as $table) {
-            $schema = $table->getSchema();
-            $schema->declareDropped();
-            $schema->save();
-        }
+        if (static::ENV['DEFAULT_DB'] === 'mysql') {
+            $manager = $this->getContainer()->get(DatabaseManager::class);
+            foreach ($manager->database('mysql')->getTables() as $table) {
+                $schema = $table->getSchema();
+                $schema->declareDropped();
+                $schema->save();
+            }
 
-        DatabaseState::$migrated = false;
+            DatabaseState::$migrated = false;
+        }
     }
 
     public function rootDirectory(): string
