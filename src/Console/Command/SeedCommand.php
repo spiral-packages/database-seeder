@@ -37,7 +37,7 @@ final class SeedCommand extends Command
         $seeders = $locator->findSeeders($this->argument('class'));
 
         $executor->afterSeed(
-            static fn(SeederInterface $seeder) => $this->output->info(
+            fn(SeederInterface $seeder) => $this->output->info(
                 \sprintf('Seeding [%s] completed successfully.', $seeder::class)
             )
         );

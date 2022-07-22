@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
+use Cycle\Database\DatabaseManager;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
 use Spiral\Cycle\Bootloader as CycleOrmBridge;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
+use Spiral\DatabaseSeeder\Database\DatabaseState;
 
 abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
 {
@@ -19,6 +21,15 @@ abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
         parent::tearDown();
 
         $this->cleanUpRuntimeDirectory();
+
+        $manager = $this->getContainer()->get(DatabaseManager::class);
+        foreach ($manager->database('mysql')->getTables() as $table) {
+            $schema = $table->getSchema();
+            $schema->declareDropped();
+            $schema->save();
+        }
+
+        DatabaseState::$migrated = false;
     }
 
     public function rootDirectory(): string
