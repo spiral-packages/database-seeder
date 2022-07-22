@@ -65,6 +65,10 @@ class Executor implements ExecutorInterface
             }
         }
 
+        if ($values === []) {
+            return true;
+        }
+
         return $this->orm->getRepository($entity)->findByPK(new Parameter($values)) === null;
     }
 }

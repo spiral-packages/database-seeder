@@ -28,8 +28,11 @@ abstract class ExecutorTest extends TestCase
         $simplePk = UserFactory::new()->makeOne();
         $simplePk->id = 1;
 
+        $unInitializedPk = UserFactory::new()->makeOne();
+
         $this->assertTrue($method->invoke($executor, $compositePk));
         $this->assertTrue($method->invoke($executor, $simplePk));
+        $this->assertTrue($method->invoke($executor, $unInitializedPk));
     }
 
     public function testIsExists(): void
