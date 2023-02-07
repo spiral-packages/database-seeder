@@ -12,7 +12,7 @@ The package provides the ability to seed your database with data using seed clas
 Make sure that your server is configured with following PHP version and extensions:
 
 - PHP 8.1+
-- Spiral framework ^3.0
+- Spiral framework 3.0+
  
 ## Documentation, Installation, and Usage Instructions
 
