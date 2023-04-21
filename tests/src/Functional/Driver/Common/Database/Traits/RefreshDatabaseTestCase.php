@@ -7,7 +7,7 @@ namespace Tests\Functional\Driver\Common\Database\Traits;
 use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
 use Tests\Functional\TestCase;
 
-abstract class RefreshDatabaseTest extends TestCase
+abstract class RefreshDatabaseTestCase extends TestCase
 {
     use RefreshDatabase;
 

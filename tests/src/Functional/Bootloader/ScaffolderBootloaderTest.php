@@ -14,7 +14,7 @@ final class ScaffolderBootloaderTest extends TestCase
     public function testScaffolderConfigsShouldByAdded(): void
     {
         $config = $this->getContainer()->get(DatabaseSeederConfig::class);
-        $declarations = $this->getConfig(ScaffolderConfig::CONFIG)['declarations'];
+        $declarations = $this->getConfig(ScaffolderConfig::CONFIG)['defaults']['declarations'];
 
         $this->assertSame(
             [

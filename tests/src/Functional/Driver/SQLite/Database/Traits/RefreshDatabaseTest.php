@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Driver\SQLite\Database\Traits;
 
-use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTest as CommonRefreshDatabaseTest;
+use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTestCase;
 
 /**
  * @group driver
@@ -12,7 +12,7 @@ use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTest as Common
  *
  * Tests in-memory database (SQLite with in-memory connection)
  */
-final class RefreshDatabaseTest extends CommonRefreshDatabaseTest
+final class RefreshDatabaseTest extends RefreshDatabaseTestCase
 {
     public function testUsingInMemoryDatabase(): void
     {

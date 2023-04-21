@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Driver\SQLite\Factory;
 
-use Tests\Functional\Driver\Common\Factory\AbstractFactoryTest as CommonAbstractFactoryTest;
+use Tests\Functional\Driver\Common\Factory\AbstractFactoryTestCase;
 
 /**
  * @group driver
@@ -12,6 +12,6 @@ use Tests\Functional\Driver\Common\Factory\AbstractFactoryTest as CommonAbstract
  *
  * Tests in-memory database (SQLite with in-memory connection)
  */
-final class AbstractFactoryTest extends CommonAbstractFactoryTest
+final class AbstractFactoryTest extends AbstractFactoryTestCase
 {
 }
