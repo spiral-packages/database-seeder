@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Console\Command;
 
 use Spiral\DatabaseSeeder\Scaffolder\Declaration\FactoryDeclaration;
+use Spiral\Scaffolder\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class FactoryCommand extends AbstractScaffolderCommand
+/**
+ * @property SymfonyStyle $output
+ */
+final class FactoryCommand extends AbstractCommand
 {
     protected const NAME = 'create:factory';
     protected const DESCRIPTION = 'Create factory for database seeding';

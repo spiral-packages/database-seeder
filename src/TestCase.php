@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder;
 
-use Spiral\Core\ContainerScope;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 
 abstract class TestCase extends \Spiral\Testing\TestCase
@@ -15,17 +14,12 @@ abstract class TestCase extends \Spiral\Testing\TestCase
     {
         parent::setUp();
 
-        // Bind container to ContainerScope
-        (new \ReflectionClass(ContainerScope::class))->setStaticPropertyValue('container', $this->getContainer());
-
         $this->setUpTraits();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-
-        (new \ReflectionClass(ContainerScope::class))->setStaticPropertyValue('container', null);
 
         $this->tearDownTraits();
     }

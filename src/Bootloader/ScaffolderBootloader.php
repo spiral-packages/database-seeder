@@ -22,14 +22,16 @@ class ScaffolderBootloader extends Bootloader
             'namespace' => $config->getFactoriesNamespace(),
             'postfix' => 'Factory',
             'class' => Declaration\FactoryDeclaration::class,
-            'baseNamespace' => '',
+            'baseNamespace' => $config->getFactoriesBaseNamespace(),
+            'directory' => $config->getFactoriesDirectory()
         ]);
 
         $scaffolder->addDeclaration(Declaration\SeederDeclaration::TYPE, [
             'namespace' => $config->getSeedersNamespace(),
             'postfix' => 'Seeder',
             'class' => Declaration\SeederDeclaration::class,
-            'baseNamespace' => '',
+            'baseNamespace' => $config->getSeedersBaseNamespace(),
+            'directory' => $config->getSeedersDirectory()
         ]);
     }
 }

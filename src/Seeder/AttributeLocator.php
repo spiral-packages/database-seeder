@@ -30,7 +30,10 @@ class AttributeLocator
             }
 
             if ($attr = $this->reader->firstClassMetadata($class, Seeder::class)) {
-                $seeders[] = $this->factory->make($class->getName(), ['priority' => $attr->priority]);
+                $seeder = $this->factory->make($class->getName(), ['priority' => $attr->priority]);
+
+                \assert($seeder instanceof SeederInterface);
+                $seeders[] = $seeder;
             }
         }
 

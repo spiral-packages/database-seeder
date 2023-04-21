@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Console\Command;
 
 use Spiral\DatabaseSeeder\Scaffolder\Declaration\SeederDeclaration;
+use Spiral\Scaffolder\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class SeederCommand extends AbstractScaffolderCommand
+/**
+ * @property SymfonyStyle $output
+ */
+final class SeederCommand extends AbstractCommand
 {
     protected const NAME = 'create:seeder';
     protected const DESCRIPTION = 'Create seeder for database seeding';
