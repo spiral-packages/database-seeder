@@ -22,13 +22,13 @@
         "fakerphp/faker": "^1.19",
         "laminas/laminas-hydrator": "^4.3",
         "spiral/attributes": "^2.0||^3.0",
-        "spiral/scaffolder": "^3.0",
+        "spiral/scaffolder": "^3.7",
         "doctrine/annotations": "^1.13",
-        "spiral/boot": "^3.0",
-        "spiral/console": "^3.0"
+        "spiral/boot": "^3.7",
+        "spiral/console": "^3.7"
     },
     "require-dev": {
-        "spiral/framework": "^3.0",
+        "spiral/framework": "^3.7",
         "mockery/mockery": "^1.5",
         "phpunit/phpunit": "^10.1",
         "vimeo/psalm": "^5.9",
