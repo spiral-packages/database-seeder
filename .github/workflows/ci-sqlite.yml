@@ -2,9 +2,8 @@ name: SQLite
 
 on:
     push:
-        branches: [ 2.0 ]
-    pull_request:
-        branches: [ 2.0 ]
+        branches: [ 2.x ]
+    pull_request: null
 
 jobs:
     test:

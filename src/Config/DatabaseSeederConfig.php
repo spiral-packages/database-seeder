@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Config;
 
 use Spiral\Core\InjectableConfig;
-use Spiral\Files\FilesInterface;
 
 final class DatabaseSeederConfig extends InjectableConfig
 {
     public const CONFIG = 'seeder';
 
-    public const DEFAULT_SEEDERS_DIR = 'database' . FilesInterface::SEPARATOR . 'Seeder';
-    public const DEFAULT_SEEDERS_NAMESPACE = 'Database\\Seeder';
-    public const DEFAULT_FACTORIES_DIR = 'database' . FilesInterface::SEPARATOR . 'Factory';
-    public const DEFAULT_FACTORIES_NAMESPACE = 'Database\\Factory';
+    public const DEFAULT_SEEDERS_DIR = 'database';
+    public const DEFAULT_SEEDERS_NAMESPACE = 'Seeder';
+    public const DEFAULT_SEEDERS_BASE_NAMESPACE = 'Database';
+    public const DEFAULT_FACTORIES_DIR = 'database';
+    public const DEFAULT_FACTORIES_NAMESPACE = 'Factory';
+    public const DEFAULT_FACTORIES_BASE_NAMESPACE = 'Database';
 
     public const SEEDERS_DIR_ENV_KEY = 'DATABASE_SEEDERS_DIRECTORY';
     public const SEEDERS_NAMESPACE_ENV_KEY = 'DATABASE_SEEDERS_NAMESPACE';
@@ -31,6 +32,12 @@ final class DatabaseSeederConfig extends InjectableConfig
         return $this->config['seeders']['namespace'];
     }
 
+    public function getSeedersBaseNamespace(): string
+    {
+        return $this->config['seeders']['baseNamespace'];
+    }
+
+
     public function getFactoriesDirectory(): string
     {
         return $this->config['factories']['directory'];
@@ -39,5 +46,10 @@ final class DatabaseSeederConfig extends InjectableConfig
     public function getFactoriesNamespace(): string
     {
         return $this->config['factories']['namespace'];
+    }
+
+    public function getFactoriesBaseNamespace(): string
+    {
+        return $this->config['factories']['baseNamespace'];
     }
 }

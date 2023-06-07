@@ -18,10 +18,12 @@ final class DefaultConfigurationBootloaderTest extends TestCase
             'seeders' => [
                 'directory' => $dirs->get('app') . DatabaseSeederConfig::DEFAULT_SEEDERS_DIR,
                 'namespace' => DatabaseSeederConfig::DEFAULT_SEEDERS_NAMESPACE,
+                'baseNamespace' => DatabaseSeederConfig::DEFAULT_SEEDERS_BASE_NAMESPACE,
             ],
             'factories' => [
                 'directory' => $dirs->get('app') . DatabaseSeederConfig::DEFAULT_FACTORIES_DIR,
                 'namespace' => DatabaseSeederConfig::DEFAULT_FACTORIES_NAMESPACE,
+                'baseNamespace' => DatabaseSeederConfig::DEFAULT_FACTORIES_BASE_NAMESPACE,
             ],
         ];
 

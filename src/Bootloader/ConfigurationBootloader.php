@@ -34,10 +34,12 @@ class ConfigurationBootloader extends Bootloader
                 'seeders' => [
                     'directory' => $env->get(Config::SEEDERS_DIR_ENV_KEY, $defaultSeedersDir),
                     'namespace' => $env->get(Config::SEEDERS_NAMESPACE_ENV_KEY, Config::DEFAULT_SEEDERS_NAMESPACE),
+                    'baseNamespace' => Config::DEFAULT_SEEDERS_BASE_NAMESPACE
                 ],
                 'factories' => [
                     'directory' => $env->get(Config::FACTORIES_DIR_ENV_KEY, $defaultFactoriesDir),
                     'namespace' => $env->get(Config::FACTORIES_NAMESPACE_ENV_KEY, Config::DEFAULT_FACTORIES_NAMESPACE),
+                    'baseNamespace' => Config::DEFAULT_FACTORIES_BASE_NAMESPACE
                 ],
             ]
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Driver\SQLite\Seeder;
 
-use Tests\Functional\Driver\Common\Seeder\ExecutorTest as CommonExecutorTest;
+use Tests\Functional\Driver\Common\Seeder\ExecutorTestCase;
 
 /**
  * @group driver
@@ -12,6 +12,6 @@ use Tests\Functional\Driver\Common\Seeder\ExecutorTest as CommonExecutorTest;
  *
  * Tests in-memory database (SQLite with in-memory connection)
  */
-final class ExecutorTest extends CommonExecutorTest
+final class ExecutorTest extends ExecutorTestCase
 {
 }

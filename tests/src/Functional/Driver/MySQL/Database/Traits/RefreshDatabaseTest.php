@@ -6,7 +6,7 @@ namespace Tests\Functional\Driver\MySQL\Database\Traits;
 
 use Cycle\Database\Database;
 use Spiral\DatabaseSeeder\Database\DatabaseState;
-use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTest as CommonRefreshDatabaseTest;
+use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTestCase;
 
 /**
  * @group driver
@@ -14,7 +14,7 @@ use Tests\Functional\Driver\Common\Database\Traits\RefreshDatabaseTest as Common
  *
  * Tests in conventional database (MySQL)
  */
-final class RefreshDatabaseTest extends CommonRefreshDatabaseTest
+final class RefreshDatabaseTest extends RefreshDatabaseTestCase
 {
     public const ENV = [
         'DEFAULT_DB' => 'mysql'

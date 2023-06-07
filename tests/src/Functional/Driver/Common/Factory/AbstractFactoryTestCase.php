@@ -10,7 +10,7 @@ use Tests\Database\Factory\PostFactory;
 use Tests\Database\Factory\UserFactory;
 use Tests\Functional\TestCase;
 
-abstract class AbstractFactoryTest extends TestCase
+abstract class AbstractFactoryTestCase extends TestCase
 {
     use RefreshDatabase;
 

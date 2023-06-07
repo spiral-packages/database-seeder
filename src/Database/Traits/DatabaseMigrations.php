@@ -16,27 +16,11 @@ trait DatabaseMigrations
     public function runDatabaseMigrations(): void
     {
         $this->runCommand('cycle:migrate', ['--run' => true]);
-
-        /* TODO wait resolving bug with finalizers
-        $directory = $this->getMigrationsDirectory();
-        $self = $this;
-        $this->getContainer()->get(FinalizerInterface::class)->addFinalizer(static function () use($self, $directory) {
-            $self->runCommand('migrate:rollback', ['--all' => true]);
-
-            $self->cleanupDirectories($directory);
-
-            DatabaseState::$migrated = false;
-        });
-        */
     }
 
     public function runDatabaseRollback(): void
     {
-        $directory = $this->getMigrationsDirectory();
-
         $this->runCommand('migrate:rollback', ['--all' => true]);
-
-        $this->cleanupDirectories($directory);
 
         DatabaseState::$migrated = false;
     }

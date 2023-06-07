@@ -12,7 +12,7 @@ use Tests\Database\Seeder\UserSeeder;
 use Tests\Database\Seeder\WithCompositePkSeeder;
 use Tests\Functional\TestCase;
 
-abstract class ExecutorTest extends TestCase
+abstract class ExecutorTestCase extends TestCase
 {
     use RefreshDatabase;
 

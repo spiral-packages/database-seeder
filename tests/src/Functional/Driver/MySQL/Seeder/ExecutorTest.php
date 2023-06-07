@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Driver\MySQL\Seeder;
 
-use Tests\Functional\Driver\Common\Seeder\ExecutorTest as CommonExecutorTest;
+use Tests\Functional\Driver\Common\Seeder\ExecutorTestCase;
 
 /**
  * @group driver
@@ -12,7 +12,7 @@ use Tests\Functional\Driver\Common\Seeder\ExecutorTest as CommonExecutorTest;
  *
  * Tests in conventional database (MySQL)
  */
-final class ExecutorTest extends CommonExecutorTest
+final class ExecutorTest extends ExecutorTestCase
 {
     public const ENV = [
         'DEFAULT_DB' => 'mysql'
