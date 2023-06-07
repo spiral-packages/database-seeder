@@ -23,7 +23,7 @@
         "laminas/laminas-hydrator": "^4.3",
         "spiral/attributes": "^2.0||^3.0",
         "spiral/scaffolder": "^3.0",
-        "doctrine/annotations": "^1.13",
+        "doctrine/annotations": "^1.13 || ^2.0",
         "spiral/boot": "^3.0",
         "spiral/console": "^3.0"
     },
