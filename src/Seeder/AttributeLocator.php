@@ -9,18 +9,15 @@ use Spiral\DatabaseSeeder\Attribute\Seeder;
 use Spiral\Core\FactoryInterface;
 use Spiral\Tokenizer\ClassesInterface;
 
-class AttributeLocator
+final class AttributeLocator implements LocatorInterface
 {
     public function __construct(
         private readonly ClassesInterface $classesLocator,
         private readonly ReaderInterface $reader,
-        private readonly FactoryInterface $factory
+        private readonly FactoryInterface $factory,
     ) {
     }
 
-    /**
-     * @return SeederInterface[]
-     */
     public function find(): array
     {
         $seeders = [];
@@ -33,7 +30,7 @@ class AttributeLocator
                 $seeder = $this->factory->make($class->getName(), ['priority' => $attr->priority]);
 
                 \assert($seeder instanceof SeederInterface);
-                $seeders[] = $seeder;
+                $seeders[$seeder::class] = $seeder;
             }
         }
 

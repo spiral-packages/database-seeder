@@ -6,10 +6,13 @@ namespace Spiral\DatabaseSeeder\Seeder;
 
 class Locator
 {
+    /**@var LocatorInterface[] */
+    private array $locator;
+
     public function __construct(
-        private AttributeLocator $attributeLocator,
-        private DirectoryLocator $directoryLocator
+        LocatorInterface ...$locator,
     ) {
+        $this->locator = $locator;
     }
 
     /**
@@ -17,12 +20,16 @@ class Locator
      */
     public function findSeeders(?string $seeder = null): array
     {
-        $seeders = \array_replace($this->directoryLocator->find(), $this->attributeLocator->find());
+        $seeders = [];
 
-        if ($seeder) {
+        foreach ($this->locator as $locator) {
+            $seeders = \array_merge($seeders, $locator->find());
+        }
+
+        if ($seeder !== null) {
             $seeders = \array_filter(
                 $seeders,
-                fn(SeederInterface $seeder) => (new \ReflectionClass($seeder))->getShortName() === $seeder
+                static fn(SeederInterface $s): bool => (new \ReflectionClass($s))->getShortName() === $seeder,
             );
         }
 
@@ -34,7 +41,7 @@ class Locator
             return ($a->getPriority() < $b->getPriority()) ? -1 : 1;
         });
 
-        return $seeders;
+        return \array_values($seeders);
     }
 
     public static function isSeederClass(\ReflectionClass $class): bool

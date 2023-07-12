@@ -9,18 +9,15 @@ use Spiral\Core\FactoryInterface;
 use Spiral\Files\FilesInterface;
 use Spiral\Tokenizer\Reflection\ReflectionFile;
 
-class DirectoryLocator
+final class DirectoryLocator implements LocatorInterface
 {
     public function __construct(
         private readonly FilesInterface $files,
         private readonly DatabaseSeederConfig $config,
-        private readonly FactoryInterface $factory
+        private readonly FactoryInterface $factory,
     ) {
     }
 
-    /**
-     * @return SeederInterface[]
-     */
     public function find(): array
     {
         if (!$this->files->isDirectory($this->config->getSeedersDirectory())) {
@@ -36,7 +33,7 @@ class DirectoryLocator
                 continue;
             }
 
-            $seeders[] = $this->factory->make($classes[0]);
+            $seeders[$classes[0]] = $this->factory->make($classes[0]);
         }
 
         return $seeders;
