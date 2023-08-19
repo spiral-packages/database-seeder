@@ -49,7 +49,7 @@ trait DatabaseAsserts
             $select->where($where);
         }
 
-        static::assertTrue($select->count() >= 0, \sprintf('Record not found in the table [%s].', $table));
+        static::assertTrue($select->count() > 0, \sprintf('Record not found in the table [%s].', $table));
     }
 
     /** @param class-string $entity */
