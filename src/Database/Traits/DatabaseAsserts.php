@@ -77,6 +77,6 @@ trait DatabaseAsserts
             $select->where($where);
         }
 
-        static::assertTrue($select->count() >= 0, \sprintf('Entity [%s] not found.', $entity));
+        static::assertTrue($select->count() > 0, \sprintf('Entity [%s] not found.', $entity));
     }
 }
