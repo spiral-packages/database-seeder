@@ -4,54 +4,51 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Database\Traits;
 
-use Cycle\Database\Database;
-use Cycle\ORM\ORM;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Select\Repository;
 use Spiral\DatabaseSeeder\Database\EntityAssertion;
+use Spiral\DatabaseSeeder\Database\TableAssertion;
 
 trait DatabaseAsserts
 {
-    /** @psalm-param non-empty-string $table */
+    /**
+     * @psalm-param non-empty-string $table
+     *
+     * @deprecated Use assertTable()->assertExists() instead.
+     */
     public function assertTableExists(string $table): void
     {
-        static::assertTrue(
-            $this->getDatabase()->hasTable($table),
-            \sprintf('Table [%s] does not exist.', $table),
-        );
+        $this->assertTable($table)->assertExists();
     }
 
-    /** @psalm-param non-empty-string $table */
+    /**
+     * @psalm-param non-empty-string $table
+     *
+     * @deprecated Use assertTable()->assertMissing() instead.
+     */
     public function assertTableIsNotExists(string $table): void
     {
-        static::assertFalse(
-            $this->getDatabase()->hasTable($table),
-            \sprintf('Table [%s] exists.', $table),
-        );
+        $this->assertTable($table)->assertMissing();
     }
 
-    /** @psalm-param non-empty-string $table */
+    /**
+     * @psalm-param non-empty-string $table
+     *
+     * @deprecated Use assertTable()->assertCountRecords() instead.
+     */
     public function assertTableCount(string $table, int $count): void
     {
-        $actual = $this->getDatabase()->table($table)->count();
-
-        static::assertSame(
-            $count,
-            $actual,
-            \sprintf('Expected %s records in the table [%s], actual are %s.', $count, $table, $actual),
-        );
+        $this->assertTable($table)->assertCountRecords($count);
     }
 
-    /** @psalm-param non-empty-string $table */
+    /**
+     * @psalm-param non-empty-string $table
+     *
+     * @deprecated Use assertTable()->where()->assertRecordExists() instead.
+     */
     public function assertTableHas(string $table, array $where = []): void
     {
-        $select = $this->getDatabase()->table($table)->select();
-
-        if ($where !== []) {
-            $select->where($where);
-        }
-
-        static::assertTrue($select->count() > 0, \sprintf('Record not found in the table [%s].', $table));
+        $this->assertTable($table)->where($where)->assertRecordExists();
     }
 
     /**
@@ -129,13 +126,16 @@ trait DatabaseAsserts
         return new EntityAssertion($entity, $this);
     }
 
-    private function getOrm(): ORMInterface
+    /**
+     * @param non-empty-string $table
+     */
+    public function assertTable(string $table): TableAssertion
     {
-        return $this->getContainer()->get(ORM::class);
+        return new TableAssertion($table, $this);
     }
 
-    private function getDatabase(): Database
+    private function getOrm(): ORMInterface
     {
-        return $this->getContainer()->get(Database::class);
+        return $this->getContainer()->get(ORMInterface::class);
     }
 }
