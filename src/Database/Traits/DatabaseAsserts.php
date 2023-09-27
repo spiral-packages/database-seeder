@@ -8,6 +8,7 @@ use Cycle\Database\Database;
 use Cycle\ORM\ORM;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Select\Repository;
+use Spiral\DatabaseSeeder\Database\EntityAssertion;
 
 trait DatabaseAsserts
 {
@@ -53,37 +54,56 @@ trait DatabaseAsserts
         static::assertTrue($select->count() > 0, \sprintf('Record not found in the table [%s].', $table));
     }
 
-    /** @param class-string $entity */
+    /**
+     * @param class-string $entity
+     *
+     * @deprecated Use assertEntity()->assertCount() instead.
+     */
     public function assertEntitiesCount(string $entity, int $count, bool $withoutScope = false): void
     {
-        $actual = $this->countEntityRecords($entity, [], $withoutScope);
+        $assert = $this->assertEntity($entity);
+        if ($withoutScope) {
+            $assert = $assert->withoutScope();
+        }
 
-        static::assertSame(
-            $count,
-            $actual,
-            \sprintf('Expected %s entities in the table, actual are %s.', $count, $actual),
-        );
+        $assert->assertCount($count);
     }
 
-    /** @param class-string $entity */
+    /**
+     * @param class-string $entity
+     *
+     * @deprecated Use assertEntity()->where()->assertExists() instead.
+     */
     public function assertTableHasEntity(string $entity, array $where = [], bool $withoutScope = false): void
     {
-        static::assertTrue(
-            $this->countEntityRecords($entity, $where, $withoutScope) > 0,
-            \sprintf('Entity [%s] not found.', $entity),
-        );
+        $assert = $this->assertEntity($entity);
+        if ($withoutScope) {
+            $assert = $assert->withoutScope();
+        }
+
+        $assert->where($where)->assertExists();
     }
 
-    /** @param class-string $entity */
+    /**
+     * @param class-string $entity
+     *
+     * @deprecated Use assertEntity()->where()->assertMissing() instead.
+     */
     public function assertTableMissingEntity(string $entity, array $where = [], bool $withoutScope = false): void
     {
-        static::assertTrue(
-            $this->countEntityRecords($entity, $where, $withoutScope) === 0,
-            \sprintf('Entity [%s] found.', $entity),
-        );
+        $assert = $this->assertEntity($entity);
+        if ($withoutScope) {
+            $assert = $assert->withoutScope();
+        }
+
+        $assert->where($where)->assertMissing();
     }
 
-    /** @param class-string $entity */
+    /**
+     * @param class-string $entity
+     *
+     * @deprecated Use assertEntity()->where()->count() instead.
+     */
     public function countEntityRecords(string $entity, array $where = [], bool $withoutScope = false): int
     {
         /** @var Repository $repository */
@@ -99,6 +119,14 @@ trait DatabaseAsserts
         }
 
         return $select->count();
+    }
+
+    /**
+     * @param class-string $entity
+     */
+    public function assertEntity(string $entity): EntityAssertion
+    {
+        return new EntityAssertion($entity, $this);
     }
 
     private function getOrm(): ORMInterface
