@@ -18,6 +18,9 @@ final class AttributeLocator implements LocatorInterface
     ) {
     }
 
+    /**
+     * @return array<class-string<SeederInterface>, SeederInterface>
+     */
     public function find(): array
     {
         $seeders = [];
