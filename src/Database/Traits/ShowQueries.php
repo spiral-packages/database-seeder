@@ -14,19 +14,7 @@ trait ShowQueries
 {
     private ?LoggerInterface $originalLogger = null;
 
-    protected function setUpShowQueries(): void
-    {
-        if ($this->getTestAttributes(Attribute::class) !== []) {
-            $this->configureLogger();
-        }
-    }
-
-    protected function tearDownShowQueries(): void
-    {
-        $this->restoreLogger();
-    }
-
-    private function configureLogger(): void
+    public function showDatabaseQueries(): void
     {
         $driver = $this->getDriver();
 
@@ -35,6 +23,18 @@ trait ShowQueries
         }
 
         $driver->setLogger(new StdoutLogger());
+    }
+
+    protected function setUpShowQueries(): void
+    {
+        if ($this->getTestAttributes(Attribute::class) !== []) {
+            $this->showDatabaseQueries();
+        }
+    }
+
+    protected function tearDownShowQueries(): void
+    {
+        $this->restoreLogger();
     }
 
     private function restoreLogger(): void
