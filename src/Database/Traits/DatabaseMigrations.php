@@ -4,46 +4,81 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Database\Traits;
 
-use Spiral\Boot\FinalizerInterface;
-use Spiral\DatabaseSeeder\Database\DatabaseState;
-use Spiral\DatabaseSeeder\Database\Exception\DatabaseMigrationsException;
+use Spiral\DatabaseSeeder\Database\TestStrategy\MigrationStrategy;
 
 trait DatabaseMigrations
 {
+    private ?MigrationStrategy $migrationStrategy = null;
+
     /**
      * Migrate the database before and after each test.
      */
     public function runDatabaseMigrations(): void
     {
-        $this->runCommand('cycle:migrate', ['--run' => true]);
+        $this->beforeMigrateDatabase();
+
+        $this->getMigrationStrategy()->migrate();
+
+        $this->afterMigrateDatabase();
     }
 
     public function runDatabaseRollback(): void
     {
-        $this->runCommand('migrate:rollback', ['--all' => true]);
+        $this->beforeRollbackDatabase();
 
-        DatabaseState::$migrated = false;
+        $this->getMigrationStrategy()->rollback();
+
+        $this->afterRollbackDatabase();
+    }
+
+    protected function setUpDatabaseMigrations(): void
+    {
+        $this->runDatabaseMigrations();
+    }
+
+    protected function tearDownDatabaseMigrations(): void
+    {
+        $this->runDatabaseRollback();
+    }
+
+    protected function getMigrationStrategy(): MigrationStrategy
+    {
+        if ($this->migrationStrategy === null) {
+            $this->migrationStrategy = new MigrationStrategy($this);
+        }
+
+        return $this->migrationStrategy;
     }
 
     /**
-     * @invisible
-     * @internal
+     * Perform any work that should take place before the database has started migrating.
      */
-    private function getMigrationsDirectory(): string
+    protected function beforeMigrateDatabase(): void
     {
-        $config = $this->getConfig('migration');
-        if (empty($config['directory'])) {
-            throw new DatabaseMigrationsException(
-                'Please, configure migrations in your test application to use DatabaseMigrations.'
-            );
-        }
+        // ...
+    }
 
-        if (!isset($config['safe']) || $config['safe'] !== true) {
-            throw new DatabaseMigrationsException(
-                'The `safe` parameter in the test application migrations configuration must be set to true.'
-            );
-        }
+    /**
+     * Perform any work that should take place once the database has finished migrating.
+     */
+    protected function afterMigrateDatabase(): void
+    {
+        // ...
+    }
 
-        return $config['directory'];
+    /**
+     * Perform any work that should take place before the database has started rollback.
+     */
+    protected function beforeRollbackDatabase(): void
+    {
+        // ...
+    }
+
+    /**
+     * Perform any work that should take place once the database has finished rollback.
+     */
+    protected function afterRollbackDatabase(): void
+    {
+        // ...
     }
 }

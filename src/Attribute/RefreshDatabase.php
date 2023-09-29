@@ -11,19 +11,21 @@ use Spiral\Attributes\NamedArgumentConstructor;
 /**
  * @Annotation
  * @NamedArgumentConstructor
- * @Target({"CLASS"})
+ * @Target({"METHOD"})
  * @Annotation\Attributes({
- *     @Annotation\Attribute("priority", type="integer"),
- * })
+ *     @Annotation\Attribute("database", type="string", required=false),
+ *     @Annotation\Attribute("except", type="array", required=false),
+ *  })
  */
-#[\Attribute(\Attribute::TARGET_CLASS), NamedArgumentConstructor]
-class Seeder
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class RefreshDatabase
 {
     /**
-     * @param positive-int $priority Execution priority
+     * @param non-empty-string|null $database
      */
     public function __construct(
-        public int $priority = 1
+        public ?string $database = null,
+        public array $except = []
     ) {
     }
 }

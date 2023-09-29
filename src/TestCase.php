@@ -6,6 +6,9 @@ namespace Spiral\DatabaseSeeder;
 
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 
+/**
+ * @deprecated Use traits instead
+ */
 abstract class TestCase extends \Spiral\Testing\TestCase
 {
     use DatabaseAsserts;
