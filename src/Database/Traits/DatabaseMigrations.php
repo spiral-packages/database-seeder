@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Database\Traits;
 
-use Spiral\DatabaseSeeder\Database\TestStrategy\MigrationStrategy;
+use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
 
 trait DatabaseMigrations
 {

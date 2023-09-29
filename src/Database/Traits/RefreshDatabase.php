@@ -12,7 +12,7 @@ use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
 use Spiral\Boot\FinalizerInterface;
 use Spiral\DatabaseSeeder\Database\Cleaner;
-use Spiral\DatabaseSeeder\Database\TestStrategy\RefreshStrategy;
+use Spiral\DatabaseSeeder\Database\Strategy\RefreshStrategy;
 
 trait RefreshDatabase
 {

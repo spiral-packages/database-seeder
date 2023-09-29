@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DatabaseSeeder\Database\TestStrategy;
+namespace Spiral\DatabaseSeeder\Database\Strategy;
 
 use Spiral\DatabaseSeeder\Database\DatabaseState;
 use Spiral\DatabaseSeeder\Database\Exception\DatabaseMigrationsException;
