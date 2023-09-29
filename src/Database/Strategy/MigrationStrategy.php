@@ -29,9 +29,11 @@ class MigrationStrategy
 
     public function migrate(): void
     {
-        $this->createMigrations
-            ? $this->testCase->runCommand('cycle:migrate', ['--run' => true])
-            : $this->testCase->runCommand('migrate');
+        if (!DatabaseState::$migrated) {
+            $this->createMigrations
+                ? $this->testCase->runCommand('cycle:migrate', ['--run' => true])
+                : $this->testCase->runCommand('migrate', ['--force' => true]);;
+        }
 
         DatabaseState::$migrated = true;
     }
