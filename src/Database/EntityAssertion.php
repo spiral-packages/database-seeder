@@ -12,7 +12,6 @@ use Spiral\Testing\TestCase;
 
 class EntityAssertion
 {
-    protected array $scopes = [];
     protected Select $select;
 
     /**
@@ -38,7 +37,7 @@ class EntityAssertion
     public function withoutScope(): self
     {
         $self = clone $this;
-        $self->scopes = [];
+        $self->select->scope(null);
 
         return $self;
     }
@@ -46,7 +45,7 @@ class EntityAssertion
     public function withScope(ScopeInterface $scope) : self
     {
         $self = clone $this;
-        $self->scopes[] = $scope;
+        $self->select->scope($scope);
 
         return $self;
     }
