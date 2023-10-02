@@ -37,25 +37,25 @@ abstract class AbstractFactory implements FactoryInterface
     private array $entityStates = [];
 
     private function __construct(
-        private readonly array $replaces = []
+        private readonly array $replaces = [],
     ) {
         $this->faker = FakerFactory::create();
 
         $this->entityFactory = new Factory(
             new LaminasEntityFactory(
                 new ReflectionHydrator(),
-                new InstanceWithoutConstructorStrategy()
+                new InstanceWithoutConstructorStrategy(),
             ),
-            $this->faker
+            $this->faker,
         );
     }
 
+    /**
+     * In this method you should describe how to create an entity with the given definition.
+     *
+     * @return TEntity
+     */
     abstract public function makeEntity(array $definition): object;
-
-    /** @psalm-return class-string */
-    abstract public function entity(): string;
-
-    abstract public function definition(): array;
 
     public static function new(array $replace = []): static
     {
@@ -166,10 +166,12 @@ abstract class AbstractFactory implements FactoryInterface
     {
         $container = ContainerScope::getContainer();
         if ($container === null) {
-            throw new OutsideScopeException(\sprintf(
-                'The container is not available. Make sure [%s] method is running in the ContainerScope.',
-                __METHOD__
-            ));
+            throw new OutsideScopeException(
+                \sprintf(
+                    'The container is not available. Make sure [%s] method is running in the ContainerScope.',
+                    __METHOD__,
+                ),
+            );
         }
 
         /** @var EntityManagerInterface $em */
@@ -187,12 +189,12 @@ abstract class AbstractFactory implements FactoryInterface
         $this->entityFactory
             ->creationStrategy(
                 $this->entity(),
-                new ClosureStrategy(fn(string $class, array $data) => $this->makeEntity($data))
+                new ClosureStrategy(fn(string $class, array $data) => $this->makeEntity($data)),
             )
             ->define($this->entity(), $definition)
             ->states($this->entity(), $this->states);
 
-        foreach ($this->afterMake as $afterMakeCallable){
+        foreach ($this->afterMake as $afterMakeCallable) {
             $this->entityFactory->afterMaking($this->entity(), $afterMakeCallable);
         }
 
