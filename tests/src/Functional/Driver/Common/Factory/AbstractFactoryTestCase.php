@@ -18,20 +18,20 @@ abstract class AbstractFactoryTestCase extends TestCase
     {
         $users = UserFactory::new()->times(5)->create();
 
-        $this->assertTableCount('users', 5);
-        $this->assertTableHas('users', ['id' => $users[0]->id]);
-        $this->assertTableHas('users', ['id' => $users[1]->id]);
-        $this->assertTableHas('users', ['id' => $users[2]->id]);
-        $this->assertTableHas('users', ['id' => $users[3]->id]);
-        $this->assertTableHas('users', ['id' => $users[4]->id]);
+        $this->assertTable('users')->assertCountRecords(5);
+        $this->assertTable('users')->where(['id' => $users[0]->id])->assertExists();
+        $this->assertTable('users')->where(['id' => $users[1]->id])->assertExists();
+        $this->assertTable('users')->where(['id' => $users[2]->id])->assertExists();
+        $this->assertTable('users')->where(['id' => $users[3]->id])->assertExists();
+        $this->assertTable('users')->where(['id' => $users[4]->id])->assertExists();
     }
 
     public function testCreateOne(): void
     {
         $user = UserFactory::new()->createOne();
 
-        $this->assertTableCount('users', 1);
-        $this->assertTableHas('users', ['id' => $user->id]);
+        $this->assertTable('users')->assertCountRecords(1);
+        $this->assertTable('users')->where(['id' => $user->id])->assertExists();
     }
 
     public function testAfterCreateCallback(): void

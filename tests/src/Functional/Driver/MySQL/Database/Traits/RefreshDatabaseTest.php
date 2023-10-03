@@ -36,8 +36,8 @@ final class RefreshDatabaseTest extends RefreshDatabaseTestCase
         // the transaction is opened. It will be closed in the finalizer after executing a test
         $this->assertSame(1, $this->getContainer()->get(Database::class)->getDriver()->getTransactionLevel());
 
-        $this->assertTableExists('comments');
-        $this->assertTableExists('posts');
-        $this->assertTableExists('users');
+        $this->assertTable('comments')->assertExists();
+        $this->assertTable('posts')->assertExists();
+        $this->assertTable('users')->assertExists();
     }
 }

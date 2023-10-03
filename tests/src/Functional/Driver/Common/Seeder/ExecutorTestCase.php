@@ -49,21 +49,21 @@ abstract class ExecutorTestCase extends TestCase
 
     public function testSeed(): void
     {
-        $this->assertTableCount('users', 0);
+        $this->assertTable('users')->assertCountRecords(0);
 
         $executor = $this->getContainer()->get(Executor::class);
         $executor->execute([new UserSeeder()]);
 
-        $this->assertTableCount('users', 1);
+        $this->assertTable('users')->assertCountRecords(1);
     }
 
     public function testSeedWithMethodCreateAndCompositePk(): void
     {
-        $this->assertTableCount('composite_pk', 0);
+        $this->assertTable('composite_pk')->assertCountRecords(0);
 
         $executor = $this->getContainer()->get(Executor::class);
         $executor->execute([new WithCompositePkSeeder()]);
 
-        $this->assertTableCount('composite_pk', 1);
+        $this->assertTable('composite_pk')->assertCountRecords(1);
     }
 }

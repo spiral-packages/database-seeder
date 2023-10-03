@@ -22,14 +22,14 @@ final class RefreshDatabaseTest extends RefreshDatabaseTestCase
     public function testRefreshInMemoryDatabase(): void
     {
         // by default, in memory db empty
-        $this->assertTableIsNotExists('comments');
-        $this->assertTableIsNotExists('posts');
-        $this->assertTableIsNotExists('users');
+        $this->assertTable('comments')->assertMissing();
+        $this->assertTable('posts')->assertMissing();
+        $this->assertTable('users')->assertMissing();
 
         $this->refreshInMemoryDatabase();
 
-        $this->assertTableExists('comments');
-        $this->assertTableExists('posts');
-        $this->assertTableExists('users');
+        $this->assertTable('comments')->assertExists();
+        $this->assertTable('posts')->assertExists();
+        $this->assertTable('users')->assertExists();
     }
 }
