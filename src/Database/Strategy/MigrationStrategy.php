@@ -32,7 +32,7 @@ class MigrationStrategy
         if (!DatabaseState::$migrated) {
             $this->createMigrations
                 ? $this->testCase->runCommand('cycle:migrate', ['--run' => true])
-                : $this->testCase->runCommand('migrate', ['--force' => true]);;
+                : $this->testCase->runCommand('migrate', ['--force' => true]);
         }
 
         DatabaseState::$migrated = true;

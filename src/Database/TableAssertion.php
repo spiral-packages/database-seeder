@@ -21,7 +21,7 @@ class TableAssertion
         protected readonly TestCase $testCase
     ) {
         $this->database = $this->testCase->getContainer()->get(DatabaseInterface::class);
-        $this->database->select()->from($this->table);
+        $this->select = $this->database->select()->from($this->table);
     }
 
     public function select(\Closure $closure) : self
