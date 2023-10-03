@@ -33,12 +33,9 @@
         "phpunit/phpunit": "^10.1",
         "vimeo/psalm": "^5.9",
         "spiral/cycle-bridge": "^2.0",
-        "spiral/testing": "^2.3"
+        "spiral/testing": "^2.6"
     },
     "autoload": {
-        "files": [
-            "src/polyfill.php"
-        ],
         "psr-4": {
             "Spiral\\DatabaseSeeder\\": "src"
         }

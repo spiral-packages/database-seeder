@@ -6,11 +6,7 @@ namespace Spiral\DatabaseSeeder\Database\Traits;
 
 use Cycle\Migrations\Config\MigrationConfig;
 use Spiral\DatabaseSeeder\Attribute\RefreshDatabase as RefreshDatabaseAttribute;
-use Cycle\Database\Config\SQLite\MemoryConnectionConfig;
-use Cycle\Database\Database;
-use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
-use Spiral\Boot\FinalizerInterface;
 use Spiral\DatabaseSeeder\Database\Cleaner;
 use Spiral\DatabaseSeeder\Database\Strategy\RefreshStrategy;
 
@@ -77,48 +73,5 @@ trait RefreshDatabase
     protected function afterRefreshingDatabase(): void
     {
         // ...
-    }
-
-    /**
-     * @deprecated
-     */
-    public function beginDatabaseTransaction(): void
-    {
-        $driver = $this->getContainer()->get(Database::class)->getDriver();
-        $driver->beginTransaction();
-
-        $this->getContainer()->get(FinalizerInterface::class)->addFinalizer(static function () use($driver) {
-            while ($driver->getTransactionLevel() >= 1) {
-                $driver->rollbackTransaction();
-            }
-            $driver->disconnect();
-        });
-    }
-
-    /**
-     * @deprecated
-     */
-    protected function refreshInMemoryDatabase(): void
-    {
-        $this->getRefreshStrategy()->refresh();
-    }
-
-    /**
-     * @deprecated
-     */
-    protected function refreshTestDatabase(): void
-    {
-        $this->getRefreshStrategy()->refresh();
-    }
-
-    /**
-     * @deprecated
-     */
-    protected function usingInMemoryDatabase(): bool
-    {
-        $manager = $this->getContainer()->get(DatabaseManager::class);
-        $info = $manager->database()->getDriver()->__debugInfo();
-
-        return isset($info['connection']) && $info['connection'] instanceof MemoryConnectionConfig;
     }
 }
