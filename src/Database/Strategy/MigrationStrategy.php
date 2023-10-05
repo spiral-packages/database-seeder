@@ -46,7 +46,7 @@ class MigrationStrategy
         if ($this->createMigrations) {
             $dir = $this->getMigrationsDirectory();
             $this->testCase->cleanupDirectories($dir);
-            $this->testCase->getContainer()->get(FilesInterface::class)->ensureDirectory($dir);
+            $this->testCase->getContainer()->get(FilesInterface::class)->ensureDirectory($dir, 0666);
         }
 
         DatabaseState::$migrated = false;
