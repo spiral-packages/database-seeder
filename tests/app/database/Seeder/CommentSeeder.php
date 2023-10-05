@@ -22,10 +22,9 @@ class CommentSeeder extends AbstractSeeder
         /** @var User $user */
         $user = UserFactory::new()->makeOne();
 
-        $comment = new Comment();
+        $comment = new Comment('foo');
         $comment->post = $post;
         $comment->postedAt = new \DateTimeImmutable();
-        $comment->text = 'foo';
         $comment->author = $user;
 
         yield $comment;

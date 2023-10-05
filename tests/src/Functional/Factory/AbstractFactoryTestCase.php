@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Driver\Common\Factory;
+namespace Tests\Functional\Factory;
 
-use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
+use Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations;
 use Tests\App\Database\Post;
 use Tests\Database\Factory\PostFactory;
 use Tests\Database\Factory\UserFactory;
 use Tests\Functional\TestCase;
 
-abstract class AbstractFactoryTestCase extends TestCase
+final class AbstractFactoryTestCase extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function testCreate(): void
     {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Driver\Common\Seeder;
+namespace Tests\Functional\Seeder;
 
-use Spiral\DatabaseSeeder\Database\Traits\RefreshDatabase;
+use Spiral\DatabaseSeeder\Database\Traits\DatabaseMigrations;
 use Spiral\DatabaseSeeder\Seeder\Executor;
 use Tests\Database\Factory\UserFactory;
 use Tests\Database\Factory\WithCompositePkFactory;
@@ -12,9 +12,9 @@ use Tests\Database\Seeder\UserSeeder;
 use Tests\Database\Seeder\WithCompositePkSeeder;
 use Tests\Functional\TestCase;
 
-abstract class ExecutorTestCase extends TestCase
+final class ExecutorTestCase extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function testIsNotExists(): void
     {
