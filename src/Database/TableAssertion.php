@@ -49,6 +49,22 @@ class TableAssertion
         );
     }
 
+    public function assertColumnExists(string $column): void
+    {
+        TestCase::assertTrue(
+            $this->database->table($this->table)->hasColumn($column),
+            \sprintf('Column [%s] does not exist.', $column),
+        );
+    }
+
+    public function assertColumnMissing(string $column): void
+    {
+        TestCase::assertFalse(
+            $this->database->table($this->table)->hasColumn($column),
+            \sprintf('Column [%s] exists.', $column),
+        );
+    }
+
     public function assertRecordExists(): void
     {
         TestCase::assertTrue(

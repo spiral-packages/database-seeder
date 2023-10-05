@@ -6,6 +6,7 @@ namespace Spiral\DatabaseSeeder\Database\Strategy;
 
 use Spiral\DatabaseSeeder\Database\DatabaseState;
 use Spiral\DatabaseSeeder\Database\Exception\DatabaseMigrationsException;
+use Spiral\Files\FilesInterface;
 use Spiral\Testing\TestCase;
 
 /**
@@ -43,7 +44,9 @@ class MigrationStrategy
         $this->testCase->runCommand('migrate:rollback', ['--all' => true]);
 
         if ($this->createMigrations) {
-            $this->testCase->cleanupDirectories($this->getMigrationsDirectory());
+            $dir = $this->getMigrationsDirectory();
+            $this->testCase->cleanupDirectories($dir);
+            $this->testCase->getContainer()->get(FilesInterface::class)->ensureDirectory($dir);
         }
 
         DatabaseState::$migrated = false;

@@ -13,17 +13,35 @@ class Cleaner
     ) {
     }
 
-    public function truncateTable(string $table, ?string $database = null, bool $foreignKeyConstraints = true): void
-    {
+    public function truncateTable(
+        string $table,
+        ?string $database = null,
+        bool $disableForeignKeyConstraints = true
+    ): void {
         $db = $this->provider->database($database);
 
-        if (!$foreignKeyConstraints) {
+        if ($disableForeignKeyConstraints) {
             $this->disableForeignKeyConstraints($database);
         }
 
-        $db->getDriver()->getSchemaHandler()->eraseTable($db->table($table));
+        $db->getDriver()->getSchemaHandler()->eraseTable($db->table($table)->getSchema());
 
-        if (!$foreignKeyConstraints) {
+        if ($disableForeignKeyConstraints) {
+            $this->enableForeignKeyConstraints($database);
+        }
+    }
+
+    public function dropTable(string $table, ?string $database = null, bool $disableForeignKeyConstraints = true): void
+    {
+        $db = $this->provider->database($database);
+
+        if ($disableForeignKeyConstraints) {
+            $this->disableForeignKeyConstraints($database);
+        }
+
+        $db->getDriver()->getSchemaHandler()->dropTable($db->table($table)->getSchema());
+
+        if ($disableForeignKeyConstraints) {
             $this->enableForeignKeyConstraints($database);
         }
     }
@@ -45,7 +63,28 @@ class Cleaner
                 continue;
             }
 
-            $this->truncateTable($table->getFullName(), database: $database, foreignKeyConstraints: false);
+            $this->truncateTable($table->getFullName(), database: $database, disableForeignKeyConstraints: true);
+        }
+    }
+
+    public function dropTables(?string $database = null, array $except = []): void
+    {
+        $db = $this->provider->database($database);
+
+        foreach ($db->getTables() as $table) {
+            $name = \explode('.', $table->getFullName(), 2);
+
+            if (\count($name) > 1) {
+                $tableName = $name[1];
+            } else {
+                $tableName = $name[0];
+            }
+
+            if (\in_array($tableName, $except, true)) {
+                continue;
+            }
+
+            $this->dropTable($table->getFullName(), database: $database, disableForeignKeyConstraints: true);
         }
     }
 

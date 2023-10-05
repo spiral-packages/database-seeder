@@ -48,7 +48,8 @@
         "phpunit/phpunit": "^10.3",
         "vimeo/psalm": "^5.15",
         "spiral/cycle-bridge": "^2.5",
-        "spiral/testing": "^2.6"
+        "spiral/testing": "^2.6",
+        "cycle/database": "^2.6"
     },
     "autoload": {
         "psr-4": {

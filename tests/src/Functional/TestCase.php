@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
+use Cycle\Database\DatabaseProviderInterface;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
 use Spiral\Cycle\Bootloader as CycleOrmBridge;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
+use Spiral\DatabaseSeeder\Database\Cleaner;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 
 abstract class TestCase extends \Spiral\Testing\TestCase
 {
     use DatabaseAsserts;
+
+    protected Cleaner $cleaner;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cleaner = new Cleaner($this->getContainer()->get(DatabaseProviderInterface::class));
+    }
 
     protected function tearDown(): void
     {
