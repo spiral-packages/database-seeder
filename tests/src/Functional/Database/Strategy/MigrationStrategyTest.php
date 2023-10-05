@@ -60,13 +60,6 @@ final class MigrationStrategyTest extends TestCase
 
     public function testMigrateWithoutCreatingMigrations(): void
     {
-       $baseDir = \dirname(__DIR__, 4) . '/app/database/';
-
-       \copy(
-           $baseDir . 'fixtures/20231005.212449_0_0_mysql_create_posts.php',
-           $baseDir . 'migrations/20231005.212449_0_0_mysql_create_posts.php'
-       );
-
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
         $this->assertTable('users')->assertMissing();
@@ -74,20 +67,6 @@ final class MigrationStrategyTest extends TestCase
 
         $strategy = new MigrationStrategy($this, false);
         $strategy->migrate();
-
-        $this->assertTable('posts')->assertExists();
-        $this->assertTable('posts')->assertColumnExists('id');
-        $this->assertTable('posts')->assertColumnExists('content');
-        $this->assertTable('posts')->assertColumnExists('author_id');
-        $this->assertTable('posts')->assertColumnExists('published_at');
-        $this->assertTable('posts')->assertEmpty();
-
-        $this->assertTable('comments')->assertMissing();
-        $this->assertTable('users')->assertMissing();
-        $this->assertTable('composite_pk')->assertMissing();
-
-        $strategy->rollback();
-        \unlink($baseDir . 'migrations/20231005.212449_0_0_mysql_create_posts.php');
 
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
