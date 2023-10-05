@@ -1,9 +1,10 @@
 name: run-tests
 
 on:
-  push:
-    branches: [ 2.x ]
-  pull_request: null
+    pull_request: null
+    push:
+        branches:
+            - '*.*'
 
 jobs:
   test:
