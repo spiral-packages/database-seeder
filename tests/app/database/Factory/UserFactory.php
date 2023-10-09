@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Tests\Database\Factory;
 
 use Spiral\DatabaseSeeder\Factory\AbstractFactory;
+use Spiral\DatabaseSeeder\Factory\FactoryInterface;
 use Tests\App\Database\User;
 
+/**
+ * @implements FactoryInterface<User>
+ */
 class UserFactory extends AbstractFactory
 {
     public function entity(): string

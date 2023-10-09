@@ -8,6 +8,9 @@ use Spiral\DatabaseSeeder\Database\Cleaner;
 
 class RefreshStrategy
 {
+    /**
+     * @param non-empty-string|null $database
+     */
     public function __construct(
         protected Cleaner $cleaner,
         protected bool $useAttribute = false,
@@ -36,6 +39,9 @@ class RefreshStrategy
         return $this->useAttribute;
     }
 
+    /**
+     * @param non-empty-string|null $database
+     */
     public function setDatabase(?string $database = null): void
     {
         $this->database = $database;

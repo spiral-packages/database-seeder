@@ -13,6 +13,10 @@ class Cleaner
     ) {
     }
 
+    /**
+     * @param non-empty-string $table
+     * @param non-empty-string|null $database
+     */
     public function truncateTable(
         string $table,
         ?string $database = null,
@@ -24,6 +28,9 @@ class Cleaner
             $this->disableForeignKeyConstraints($database);
         }
 
+        /**
+         * @psalm-suppress UndefinedInterfaceMethod
+         */
         $db->getDriver()->getSchemaHandler()->eraseTable($db->table($table)->getSchema());
 
         if ($disableForeignKeyConstraints) {
@@ -31,6 +38,10 @@ class Cleaner
         }
     }
 
+    /**
+     * @param non-empty-string $table
+     * @param non-empty-string|null $database
+     */
     public function dropTable(string $table, ?string $database = null, bool $disableForeignKeyConstraints = true): void
     {
         $db = $this->provider->database($database);
@@ -39,6 +50,9 @@ class Cleaner
             $this->disableForeignKeyConstraints($database);
         }
 
+        /**
+         * @psalm-suppress UndefinedInterfaceMethod
+         */
         $db->getDriver()->getSchemaHandler()->dropTable($db->table($table)->getSchema());
 
         if ($disableForeignKeyConstraints) {
@@ -46,6 +60,9 @@ class Cleaner
         }
     }
 
+    /**
+     * @param non-empty-string|null $database
+     */
     public function refreshDb(?string $database = null, array $except = []): void
     {
         $db = $this->provider->database($database);
@@ -63,10 +80,16 @@ class Cleaner
                 continue;
             }
 
-            $this->truncateTable($table->getFullName(), database: $database, disableForeignKeyConstraints: true);
+            $fullName = $table->getFullName();
+            \assert(!empty($fullName));
+
+            $this->truncateTable($fullName, database: $database, disableForeignKeyConstraints: true);
         }
     }
 
+    /**
+     * @param non-empty-string|null $database
+     */
     public function dropTables(?string $database = null, array $except = []): void
     {
         $db = $this->provider->database($database);
@@ -84,7 +107,10 @@ class Cleaner
                 continue;
             }
 
-            $this->dropTable($table->getFullName(), database: $database, disableForeignKeyConstraints: true);
+            $fullName = $table->getFullName();
+            \assert(!empty($fullName));
+
+            $this->dropTable($fullName, database: $database, disableForeignKeyConstraints: true);
         }
     }
 
@@ -92,6 +118,9 @@ class Cleaner
     {
         $db = $this->provider->database($database);
 
+        /**
+         *@psalm-suppress UndefinedInterfaceMethod
+         */
         $db->getDriver()->getSchemaHandler()->disableForeignKeyConstraints();
     }
 
@@ -99,6 +128,9 @@ class Cleaner
     {
         $db = $this->provider->database($database);
 
+        /**
+         *@psalm-suppress UndefinedInterfaceMethod
+         */
         $db->getDriver()->getSchemaHandler()->enableForeignKeyConstraints();
     }
 }

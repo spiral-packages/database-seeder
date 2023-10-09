@@ -29,6 +29,7 @@ class SqlFileStrategy
         if (!\is_string($sql)) {
             throw new DatabaseException('Could not read SQL file.');
         }
+        \assert(!empty($sql));
 
         $this->provider->database($this->database)->execute($sql);
 
@@ -46,6 +47,7 @@ class SqlFileStrategy
         if (!\is_string($sql)) {
             throw new DatabaseException('Could not read SQL file.');
         }
+        \assert(!empty($sql));
 
         $this->provider->database($this->database)->execute($sql);
 
