@@ -20,7 +20,7 @@ class Comment
     #[BelongsTo(target: Post::class, fkCreate: false)]
     public Post $post;
 
-    #[Column(type: 'datetime')]
+    #[Column(type: 'datetime', name: 'posted_at')]
     public \DateTimeImmutable $postedAt;
 
     public function __construct(

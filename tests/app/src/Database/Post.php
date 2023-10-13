@@ -18,7 +18,7 @@ class Post
     #[BelongsTo(target: User::class, fkCreate: false)]
     public User $author;
 
-    #[Column(type: 'datetime')]
+    #[Column(type: 'datetime', name: 'published_at')]
     public \DateTimeImmutable $publishedAt;
 
     /** @var Comment[] */

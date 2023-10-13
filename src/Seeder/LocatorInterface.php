@@ -7,8 +7,7 @@ namespace Spiral\DatabaseSeeder\Seeder;
 interface LocatorInterface
 {
     /**
-     * @template T of SeederInterface
-     * @return array<class-string<T>, T>
+     * @return array<class-string<SeederInterface>, SeederInterface>
      */
     public function find(): array;
 }

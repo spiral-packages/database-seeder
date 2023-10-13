@@ -41,7 +41,7 @@ class Locator
             return ($a->getPriority() < $b->getPriority()) ? -1 : 1;
         });
 
-        return \array_values($seeders);
+        return $seeders;
     }
 
     public static function isSeederClass(\ReflectionClass $class): bool

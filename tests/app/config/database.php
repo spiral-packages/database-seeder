@@ -5,20 +5,13 @@ declare(strict_types=1);
 use Cycle\Database\Config;
 
 return [
-    'default' => env('DEFAULT_DB'),
+    'default' => 'mysql',
     'databases' => [
-        'sqlite' => [
-            'driver' => 'sqlite',
-        ],
         'mysql' => [
             'driver' => 'mysql',
         ],
     ],
     'drivers' => [
-        'sqlite' => new Config\SQLiteDriverConfig(
-            connection: new Config\SQLite\MemoryConnectionConfig(),
-            queryCache: true
-        ),
         'mysql' => new Config\MySQLDriverConfig(
             connection: new Config\MySQL\TcpConnectionConfig(
                 database: 'spiral',

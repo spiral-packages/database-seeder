@@ -25,16 +25,16 @@ class User
     #[Column(type: 'boolean', typecast: 'bool')]
     public bool $active;
 
-    #[Column(type: 'float')]
+    #[Column(type: 'float', name: 'some_float_val')]
     public float $someFloatVal;
 
     #[Column(type: 'boolean', typecast: 'bool')]
     public bool $admin = false;
 
     public function __construct(
-        #[Column(type: 'string')]
+        #[Column(type: 'string', name: 'first_name')]
         public string $firstName,
-        #[Column(type: 'string')]
+        #[Column(type: 'string', name: 'last_name')]
         public string $lastName
     ) {
     }

@@ -4,75 +4,59 @@ declare(strict_types=1);
 
 namespace Spiral\DatabaseSeeder\Database\Traits;
 
-use Cycle\Database\Config\SQLite\MemoryConnectionConfig;
-use Cycle\Database\Database;
-use Cycle\Database\DatabaseManager;
-use Spiral\Boot\FinalizerInterface;
-use Spiral\DatabaseSeeder\Database\DatabaseState;
+use Cycle\Migrations\Config\MigrationConfig;
+use Spiral\DatabaseSeeder\Attribute\RefreshDatabase as RefreshDatabaseAttribute;
+use Cycle\Database\DatabaseProviderInterface;
+use Spiral\DatabaseSeeder\Database\Cleaner;
+use Spiral\DatabaseSeeder\Database\Strategy\RefreshStrategy;
 
 trait RefreshDatabase
 {
+    private ?RefreshStrategy $refreshStrategy = null;
+
     /**
-     * Define hooks to migrate the database before and after each test.
+     * Refresh database after each test.
      */
     public function refreshDatabase(): void
     {
         $this->beforeRefreshingDatabase();
 
-        $this->usingInMemoryDatabase()
-            ? $this->refreshInMemoryDatabase()
-            : $this->refreshTestDatabase();
+        $this->getRefreshStrategy()->refresh();
 
         $this->afterRefreshingDatabase();
     }
 
-    /**
-     * Begin a database transaction on the testing database.
-     */
-    public function beginDatabaseTransaction(): void
+    protected function tearDownRefreshDatabase(): void
     {
-        $driver = $this->getContainer()->get(Database::class)->getDriver();
-        $driver->beginTransaction();
-
-        $this->getContainer()->get(FinalizerInterface::class)->addFinalizer(static function () use($driver) {
-            while ($driver->getTransactionLevel() >= 1) {
-                $driver->rollbackTransaction();
-            }
-            $driver->disconnect();
-        });
-    }
-
-    /**
-     * Refresh the in-memory database.
-     */
-    protected function refreshInMemoryDatabase(): void
-    {
-        $this->runCommand('cycle:sync');
-    }
-
-    /**
-     * Refresh a conventional test database.
-     */
-    protected function refreshTestDatabase(): void
-    {
-        if (!DatabaseState::$migrated) {
-            $this->runCommand('cycle:sync');
-
-            DatabaseState::$migrated = true;
+        if (!$this->getRefreshStrategy()->isRefreshAttributeEnabled()) {
+            $this->refreshDatabase();
+            return;
         }
 
-        $this->beginDatabaseTransaction();
+        $attributes = $this->getTestAttributes(RefreshDatabaseAttribute::class);
+        if ($attributes === []) {
+            return;
+        }
+
+        $this->getRefreshStrategy()->setDatabase($attributes[0]->database);
+        $this->getRefreshStrategy()->setExcept(
+            \array_merge($attributes[0]->except, [$this->getConfig(MigrationConfig::CONFIG)['table']])
+        );
+
+        $this->refreshDatabase();
     }
 
-    /**
-     * Determine if an in-memory database is being used.
-     */
-    protected function usingInMemoryDatabase(): bool
+    protected function getRefreshStrategy(): RefreshStrategy
     {
-        $manager = $this->getContainer()->get(DatabaseManager::class);
-        $info = $manager->database()->getDriver()->__debugInfo();
+        if ($this->refreshStrategy === null) {
+            $this->refreshStrategy = new RefreshStrategy(
+                cleaner: new Cleaner($this->getContainer()->get(DatabaseProviderInterface::class)),
+                useAttribute: false,
+                except: [$this->getConfig(MigrationConfig::CONFIG)['table']]
+            );
+        }
 
-        return isset($info['connection']) && $info['connection'] instanceof MemoryConnectionConfig;
+        return $this->refreshStrategy;
     }
 
     /**

@@ -4,34 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
-use Cycle\Database\DatabaseManager;
+use Cycle\Database\DatabaseProviderInterface;
 use Spiral\Boot\Bootloader\ConfigurationBootloader;
 use Spiral\Cycle\Bootloader as CycleOrmBridge;
 use Spiral\DatabaseSeeder\Bootloader\DatabaseSeederBootloader;
-use Spiral\DatabaseSeeder\Database\DatabaseState;
+use Spiral\DatabaseSeeder\Database\Cleaner;
+use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 
-abstract class TestCase extends \Spiral\DatabaseSeeder\TestCase
+abstract class TestCase extends \Spiral\Testing\TestCase
 {
-    public const ENV = [
-        'DEFAULT_DB' => 'sqlite'
-    ];
+    use DatabaseAsserts;
+
+    protected Cleaner $cleaner;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cleaner = new Cleaner($this->getContainer()->get(DatabaseProviderInterface::class));
+    }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
         $this->cleanUpRuntimeDirectory();
-
-        if (\array_key_exists('DEFAULT_DB', static::ENV) && static::ENV['DEFAULT_DB'] === 'mysql') {
-            $manager = $this->getContainer()->get(DatabaseManager::class);
-            foreach ($manager->database('mysql')->getTables() as $table) {
-                $schema = $table->getSchema();
-                $schema->declareDropped();
-                $schema->save();
-            }
-
-            DatabaseState::$migrated = false;
-        }
     }
 
     public function rootDirectory(): string

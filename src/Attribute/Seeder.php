@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Spiral\DatabaseSeeder\Attribute;
 
 use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Annotation\Target;
 use Spiral\Attributes\NamedArgumentConstructor;
 
 /**
@@ -19,7 +20,7 @@ use Spiral\Attributes\NamedArgumentConstructor;
 class Seeder
 {
     /**
-     * @psalm-param positive-int $priority Execution priority
+     * @param positive-int $priority Execution priority
      */
     public function __construct(
         public int $priority = 1

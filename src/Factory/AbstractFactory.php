@@ -18,6 +18,10 @@ use Spiral\DatabaseSeeder\Factory\Exception\FactoryException;
 use Spiral\DatabaseSeeder\Factory\Exception\OutsideScopeException;
 
 /**
+ * @template TEntity of object
+ *
+ * @implements FactoryInterface<TEntity>
+ *
  * @property-read $data
  */
 abstract class AbstractFactory implements FactoryInterface
@@ -183,7 +187,11 @@ abstract class AbstractFactory implements FactoryInterface
         $em->run();
     }
 
-    /** @internal */
+    /**
+     * @internal
+     *
+     * @return TEntity|array
+     */
     private function object(Closure $definition): object|array
     {
         $this->entityFactory
@@ -209,7 +217,11 @@ abstract class AbstractFactory implements FactoryInterface
         return $this->applyEntityState($result);
     }
 
-    /** @internal */
+    /**
+     * @internal
+     *
+     * @return TEntity
+     */
     private function applyEntityState(object $entity): object
     {
         foreach ($this->entityStates as $state) {
