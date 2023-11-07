@@ -29,12 +29,12 @@ trait Transactions
         $this->afterRollbackTransaction();
     }
 
-    protected function setUpTransaction(): void
+    protected function setUpTransactions(): void
     {
         $this->beginTransaction();
     }
 
-    protected function tearDownTransaction(): void
+    protected function tearDownTransactions(): void
     {
         $this->rollbackTransaction();
     }
