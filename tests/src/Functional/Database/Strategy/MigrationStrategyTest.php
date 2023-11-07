@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Database\Strategy;
 
-use Cycle\Database\DatabaseInterface;
 use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 use Tests\Functional\TestCase;
@@ -51,7 +50,7 @@ final class MigrationStrategyTest extends TestCase
         $this->assertTable('composite_pk')->assertColumnExists('content');
         $this->assertTable('composite_pk')->assertEmpty();
 
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $strategy->rollback();
 
@@ -60,7 +59,7 @@ final class MigrationStrategyTest extends TestCase
         $this->assertTable('users')->assertMissing();
         $this->assertTable('composite_pk')->assertMissing();
 
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
     }
 
     public function testMigrateWithoutCreatingMigrations(): void
@@ -73,13 +72,13 @@ final class MigrationStrategyTest extends TestCase
         $strategy = new MigrationStrategy($this, false);
         $strategy->migrate();
 
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
         $this->assertTable('users')->assertMissing();
         $this->assertTable('composite_pk')->assertMissing();
 
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
     }
 }

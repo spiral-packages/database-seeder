@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace src\Functional\Database\Strategy;
 
-use Cycle\Database\DatabaseInterface;
 use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
 use Spiral\DatabaseSeeder\Database\Strategy\TransactionStrategy;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
@@ -18,7 +17,7 @@ final class TransactionStrategyTest extends TestCase
     {
         parent::tearDown();
 
-        $this->cleaner->dropTables();
+        $this->getDatabaseCleaner()->dropTables();
     }
 
     public function testTransactionsWithCreatingMigrations(): void
@@ -31,7 +30,7 @@ final class TransactionStrategyTest extends TestCase
         $strategy = new TransactionStrategy($this, new MigrationStrategy($this, true));
         $strategy->begin();
 
-        $this->assertSame(1, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(1, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertExists();
         $this->assertTable('comments')->assertColumnExists('id');
@@ -63,7 +62,7 @@ final class TransactionStrategyTest extends TestCase
 
         $strategy->rollback();
 
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertExists();
         $this->assertTable('posts')->assertExists();
@@ -81,7 +80,7 @@ final class TransactionStrategyTest extends TestCase
         $strategy = new TransactionStrategy($this, new MigrationStrategy($this, false));
         $strategy->begin();
 
-        $this->assertSame(1, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(1, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
@@ -89,6 +88,6 @@ final class TransactionStrategyTest extends TestCase
         $this->assertTable('composite_pk')->assertMissing();
 
         $strategy->rollback();
-        $this->assertSame(0, $this->getContainer()->get(DatabaseInterface::class)->getDriver()->getTransactionLevel());
+        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
     }
 }

@@ -18,7 +18,7 @@ final class RefreshStrategyTest extends TestCase
 
     public function testRefreshStrategy(): void
     {
-        $db = $this->getContainer()->get(DatabaseInterface::class);
+        $db = $this->getCurrentDatabase();
         $schema = $db->table('users')->getSchema();
         $schema->primary('id');
         $schema->datetime('birthday')->nullable();
@@ -36,12 +36,12 @@ final class RefreshStrategyTest extends TestCase
 
         $this->assertTable('users')->assertCountRecords(5);
 
-        $strategy = new RefreshStrategy($this->cleaner);
+        $strategy = new RefreshStrategy($this->getDatabaseCleaner());
         $strategy->refresh();
 
         $this->assertTable('users')->assertEmpty();
 
-        $this->cleaner->dropTable('users');
+        $this->getDatabaseCleaner()->dropTable('users');
     }
 
     public function testRefreshStrategyWithExceptTable(): void
@@ -56,7 +56,7 @@ final class RefreshStrategyTest extends TestCase
         $this->assertTable('posts')->assertCountRecords(1);
         $this->assertTable('comments')->assertCountRecords(3);
 
-        $strategy = new RefreshStrategy($this->cleaner, except: ['comments', 'migrations']);
+        $strategy = new RefreshStrategy($this->getDatabaseCleaner(), except: ['comments', 'migrations']);
         $strategy->refresh();
 
         $this->assertTable('users')->assertEmpty();

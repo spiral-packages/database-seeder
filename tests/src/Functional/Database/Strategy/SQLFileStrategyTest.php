@@ -19,14 +19,14 @@ final class SQLFileStrategyTest extends TestCase
 
         $strategy = new SqlFileStrategy(
             \dirname(__DIR__, 4) . '/app/database/sql/execute.sql',
-            $this->getContainer()->get(DatabaseProviderInterface::class)
+            $this->getCurrentDatabaseProvider()
         );
         $strategy->execute();
 
         $this->assertTable('users')->assertExists();
         $this->assertTable('users')->assertCountRecords(5);
 
-        $this->cleaner->dropTable('users');
+        $this->getDatabaseCleaner()->dropTable('users');
     }
 
     public function testExecuteAndDrop(): void
@@ -35,7 +35,7 @@ final class SQLFileStrategyTest extends TestCase
 
         $strategy = new SqlFileStrategy(
             \dirname(__DIR__, 4) . '/app/database/sql/execute.sql',
-            $this->getContainer()->get(DatabaseProviderInterface::class),
+            $this->getCurrentDatabaseProvider(),
             \dirname(__DIR__, 4) . '/app/database/sql/drop.sql',
         );
         $strategy->execute();
