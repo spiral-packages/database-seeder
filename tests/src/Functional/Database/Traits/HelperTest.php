@@ -7,6 +7,7 @@ namespace Tests\Functional\Database\Traits;
 use Cycle\Database\DatabaseInterface;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Database\Driver\DriverInterface;
+use Cycle\ORM\EntityManagerInterface;
 use Cycle\ORM\Heap\HeapInterface;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
@@ -44,6 +45,11 @@ final class HelperTest extends TestCase
     public function testGetOrm(): void
     {
         $this->assertInstanceOf(ORMInterface::class, $this->getOrm());
+    }
+
+    public function testGetEntityManager(): void
+    {
+        $this->assertInstanceOf(EntityManagerInterface::class, $this->getEntityManager());
     }
 
     public function testDetachEntityFromIdentityMap(): void
@@ -109,5 +115,23 @@ final class HelperTest extends TestCase
         $this->getContainer()->bindSingleton(ORMInterface::class, $orm, true);
 
         $this->assertSame($repository, $this->getRepositoryFor('someEntity'));
+    }
+
+    public function testPersist(): void
+    {
+        $em = $this->createMock(EntityManagerInterface::class);
+
+        $em
+            ->expects($this->once())
+            ->method('persist')
+            ->with($entity = new \stdClass())
+            ->willReturnSelf();
+        $em
+            ->expects($this->once())
+            ->method('run');
+
+        $this->getContainer()->bindSingleton(EntityManagerInterface::class, $em, true);
+
+        $this->persist($entity);
     }
 }

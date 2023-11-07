@@ -7,6 +7,7 @@ namespace Spiral\DatabaseSeeder\Database\Traits;
 use Cycle\Database\DatabaseInterface;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Database\Driver\DriverInterface;
+use Cycle\ORM\EntityManagerInterface;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Spiral\DatabaseSeeder\Database\Cleaner;
@@ -44,6 +45,11 @@ trait Helper
         return $this->getContainer()->get(ORMInterface::class);
     }
 
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->getContainer()->get(EntityManagerInterface::class);
+    }
+
     public function detachEntityFromIdentityMap(object $entity): void
     {
         $this->getOrm()->getHeap()->detach($entity);
@@ -57,5 +63,10 @@ trait Helper
     public function getRepositoryFor(object|string $entity): RepositoryInterface
     {
         return $this->getOrm()->getRepository($entity);
+    }
+
+    public function persist(object $entity): void
+    {
+        $this->getEntityManager()->persist($entity)->run();
     }
 }

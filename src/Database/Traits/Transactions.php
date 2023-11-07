@@ -6,7 +6,7 @@ namespace Spiral\DatabaseSeeder\Database\Traits;
 
 use Spiral\DatabaseSeeder\Database\Strategy\TransactionStrategy;
 
-trait Transaction
+trait Transactions
 {
     private ?TransactionStrategy $transactionStrategy = null;
 
