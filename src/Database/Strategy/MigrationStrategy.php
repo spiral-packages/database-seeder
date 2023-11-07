@@ -18,10 +18,6 @@ use Spiral\Testing\TestCase;
  */
 class MigrationStrategy
 {
-    /**
-     * @param TestCase $testCase
-     * @param bool $createMigrations
-     */
     public function __construct(
         protected TestCase $testCase,
         protected bool $createMigrations = false
@@ -44,9 +40,7 @@ class MigrationStrategy
         $this->testCase->runCommand('migrate:rollback', ['--all' => true]);
 
         if ($this->createMigrations) {
-            $dir = $this->getMigrationsDirectory();
-            $this->testCase->cleanupDirectories($dir);
-            $this->testCase->getContainer()->get(FilesInterface::class)->ensureDirectory($dir, 0666);
+            $this->deleteMigrations();
         }
 
         DatabaseState::$migrated = false;
@@ -60,6 +54,18 @@ class MigrationStrategy
     public function enableCreationMigrations(): void
     {
         $this->createMigrations = true;
+    }
+
+    public function isCreateMigrations(): bool
+    {
+        return $this->createMigrations;
+    }
+
+    public function deleteMigrations(): void
+    {
+        $dir = $this->getMigrationsDirectory();
+        $this->testCase->cleanupDirectories($dir);
+        $this->testCase->getContainer()->get(FilesInterface::class)->ensureDirectory($dir, 0666);
     }
 
     protected function getMigrationsDirectory(): string
