@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\Functional\Database\Strategy;
+namespace Tests\Functional\Database\Strategy;
 
 use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
 use Spiral\DatabaseSeeder\Database\Strategy\TransactionStrategy;

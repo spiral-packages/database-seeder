@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Database\Strategy;
 
-use Cycle\Database\DatabaseProviderInterface;
 use Spiral\DatabaseSeeder\Database\Strategy\SqlFileStrategy;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 use Tests\Functional\TestCase;

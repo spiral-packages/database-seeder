@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Database\Strategy;
 
-use Cycle\Database\DatabaseInterface;
 use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
 use Spiral\DatabaseSeeder\Database\Strategy\RefreshStrategy;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
