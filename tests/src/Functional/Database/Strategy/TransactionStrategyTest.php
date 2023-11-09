@@ -5,22 +5,32 @@ declare(strict_types=1);
 namespace Tests\Functional\Database\Strategy;
 
 use Spiral\DatabaseSeeder\Database\Strategy\MigrationStrategy;
+use Spiral\DatabaseSeeder\Database\Strategy\TransactionStrategy;
 use Spiral\DatabaseSeeder\Database\Traits\DatabaseAsserts;
 use Tests\Functional\TestCase;
 
-final class MigrationStrategyTest extends TestCase
+final class TransactionStrategyTest extends TestCase
 {
     use DatabaseAsserts;
 
-    public function testMigrateWithCreatingMigrations(): void
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->getDatabaseCleaner()->dropTables();
+    }
+
+    public function testTransactionsWithCreatingMigrations(): void
     {
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
         $this->assertTable('users')->assertMissing();
         $this->assertTable('composite_pk')->assertMissing();
 
-        $strategy = new MigrationStrategy($this, true);
-        $strategy->migrate();
+        $strategy = new TransactionStrategy($this, new MigrationStrategy($this, true));
+        $strategy->begin();
+
+        $this->assertSame(1, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertExists();
         $this->assertTable('comments')->assertColumnExists('id');
@@ -50,35 +60,34 @@ final class MigrationStrategyTest extends TestCase
         $this->assertTable('composite_pk')->assertColumnExists('content');
         $this->assertTable('composite_pk')->assertEmpty();
 
-        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
-
         $strategy->rollback();
 
-        $this->assertTable('comments')->assertMissing();
-        $this->assertTable('posts')->assertMissing();
-        $this->assertTable('users')->assertMissing();
-        $this->assertTable('composite_pk')->assertMissing();
-
         $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
+
+        $this->assertTable('comments')->assertExists();
+        $this->assertTable('posts')->assertExists();
+        $this->assertTable('users')->assertExists();
+        $this->assertTable('composite_pk')->assertExists();
     }
 
-    public function testMigrateWithoutCreatingMigrations(): void
+    public function testTransactionsWithoutCreatingMigrations(): void
     {
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
         $this->assertTable('users')->assertMissing();
         $this->assertTable('composite_pk')->assertMissing();
 
-        $strategy = new MigrationStrategy($this, false);
-        $strategy->migrate();
+        $strategy = new TransactionStrategy($this, new MigrationStrategy($this, false));
+        $strategy->begin();
 
-        $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
+        $this->assertSame(1, $this->getCurrentDatabaseDriver()->getTransactionLevel());
 
         $this->assertTable('comments')->assertMissing();
         $this->assertTable('posts')->assertMissing();
         $this->assertTable('users')->assertMissing();
         $this->assertTable('composite_pk')->assertMissing();
 
+        $strategy->rollback();
         $this->assertSame(0, $this->getCurrentDatabaseDriver()->getTransactionLevel());
     }
 }

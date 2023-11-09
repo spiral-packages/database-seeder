@@ -8,6 +8,7 @@ use Butschster\EntityFaker\EntityFactory\ClosureStrategy;
 use Butschster\EntityFaker\EntityFactory\InstanceWithoutConstructorStrategy;
 use Closure;
 use Cycle\ORM\EntityManagerInterface;
+use Cycle\ORM\ORMInterface;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Laminas\Hydrator\ReflectionHydrator;
@@ -185,6 +186,8 @@ abstract class AbstractFactory implements FactoryInterface
             $em->persist($entity);
         }
         $em->run();
+
+        $container->get(ORMInterface::class)->getHeap()->clean();
     }
 
     /**
