@@ -23,6 +23,7 @@ class TableAssertion
         protected readonly TestCase $testCase,
     ) {
         $this->database = $this->testCase->getContainer()->get(DatabaseInterface::class);
+        /** @psalm-suppress InternalMethod */
         $this->select = $this->database->select()->from($this->table);
     }
 
@@ -140,9 +141,8 @@ class TableAssertion
                 $nullable,
                 $column->isNullable(),
                 \sprintf(
-                    'Nullable for column [%s] is not equal to expected [%s].',
+                    'Nullable for column [%s] is not equal to expected.',
                     $column->getName(),
-                    $nullable,
                 ),
             );
         }
@@ -152,9 +152,8 @@ class TableAssertion
                 $hasDefaultValue,
                 $column->hasDefaultValue(),
                 \sprintf(
-                    'Has default value for column [%s] is not equal to expected [%s].',
+                    'Has default value for column [%s] is not equal to expected.',
                     $column->getName(),
-                    $hasDefaultValue,
                 ),
             );
         }
@@ -164,9 +163,8 @@ class TableAssertion
                 $defaultValue,
                 $column->getDefaultValue(),
                 \sprintf(
-                    'Default value for column [%s] is not equal to expected [%s].',
+                    'Default value for column [%s] is not equal to expected.',
                     $column->getName(),
-                    $defaultValue,
                 ),
             );
         }
@@ -289,10 +287,11 @@ class TableAssertion
      */
     public function countRecords(): int
     {
+        /** @psalm-suppress InternalMethod */
         return $this->select->count();
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->select = clone $this->select;
     }

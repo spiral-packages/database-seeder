@@ -122,7 +122,7 @@ class EntityAssertion
         return $this->select->count();
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->select = clone $this->select;
     }
