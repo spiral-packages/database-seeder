@@ -10,14 +10,22 @@ use Spiral\DatabaseSeeder\Database\TableAssertion;
 trait DatabaseAsserts
 {
     /**
-     * @param class-string $entity
+     * Build entity assertion.
+     *
+     * @param class-string|object $entity
      */
-    public function assertEntity(string $entity): EntityAssertion
+    public function assertEntity(string|object $entity): EntityAssertion
     {
+        if (\is_object($entity)) {
+            $entity = $entity::class;
+        }
+
         return new EntityAssertion($entity, $this);
     }
 
     /**
+     * Build table assertion.
+     *
      * @param non-empty-string $table
      */
     public function assertTable(string $table): TableAssertion

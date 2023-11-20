@@ -19,7 +19,7 @@ class EntityAssertion
      */
     public function __construct(
         protected readonly string $entity,
-        protected readonly TestCase $testCase
+        protected readonly TestCase $testCase,
     ) {
         /**
          * @var ORMInterface $orm
@@ -34,6 +34,9 @@ class EntityAssertion
         $this->select = $repository->select();
     }
 
+    /**
+     * Disable scope for the next query.
+     */
     public function withoutScope(): self
     {
         $self = clone $this;
@@ -42,7 +45,10 @@ class EntityAssertion
         return $self;
     }
 
-    public function withScope(ScopeInterface $scope) : self
+    /**
+     * Set scope for the next query.
+     */
+    public function withScope(ScopeInterface $scope): self
     {
         $self = clone $this;
         $self->select->scope($scope);
@@ -50,7 +56,11 @@ class EntityAssertion
         return $self;
     }
 
-    public function select(\Closure $closure) : self
+    /**
+     * Use query builder for the next query.
+     * @param \Closure(Select):void $closure
+     */
+    public function select(\Closure $closure): self
     {
         $self = clone $this;
         $closure($self->select);
@@ -58,15 +68,17 @@ class EntityAssertion
         return $self;
     }
 
-
     public function where(array $where): self
     {
         $self = clone $this;
-        $this->select->where($where);
+        $self->select->where($where);
 
         return $self;
     }
 
+    /**
+     * Assert that the number of entities in the table for the current query is equal to the expected number.
+     */
     public function assertCount(int $total): void
     {
         $actual = $this->count();
@@ -78,23 +90,40 @@ class EntityAssertion
         );
     }
 
+    /**
+     * Assert that at least one entity is present in the table for the current query.
+     */
     public function assertExists(): void
     {
         TestCase::assertTrue($this->count() > 0, \sprintf('Entity [%s] not found.', $this->entity));
     }
 
+    /**
+     * Assert that no entities are present in the table for the current query.
+     */
     public function assertMissing(): void
     {
-        TestCase::assertSame(0, $this->count(), \sprintf('Entity [%s] found.',  $this->entity));
+        TestCase::assertSame(0, $this->count(), \sprintf('Entity [%s] found.', $this->entity));
     }
 
+    /**
+     * Assert that no entities are present in the table for the current query.
+     */
     public function assertEmpty(): void
     {
         $this->assertCount(0);
     }
 
+    /**
+     * Count entities in the table for the current query.
+     */
     public function count(): int
     {
         return $this->select->count();
+    }
+
+    public function __clone()
+    {
+        $this->select = clone $this->select;
     }
 }
