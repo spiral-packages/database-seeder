@@ -6,6 +6,8 @@ namespace Spiral\DatabaseSeeder\Factory;
 
 /**
  * @template TEntity of object
+ *
+ * @psalm-type TDefinition = array<string, mixed>
  */
 interface FactoryInterface
 {
@@ -16,10 +18,17 @@ interface FactoryInterface
      */
     public function entity(): string;
 
+    /**
+     * Create a new factory instance for the given entity.
+     *
+     * @param TDefinition $replace The attributes to replace.
+     */
     public static function new(): static;
 
     /**
      * Entity data definition. This data will be used to create an entity.
+     *
+     * @return TDefinition
      */
     public function definition(): array;
 
@@ -53,6 +62,7 @@ interface FactoryInterface
 
     /**
      * Make an entity without persisting it to the database.
+     *
      * @return TEntity
      */
     public function makeOne(): object;
