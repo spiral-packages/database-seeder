@@ -9,7 +9,7 @@ use Cycle\Database\DatabaseProviderInterface;
 class Cleaner
 {
     public function __construct(
-        protected readonly DatabaseProviderInterface $provider
+        protected readonly DatabaseProviderInterface $provider,
     ) {
     }
 
@@ -20,7 +20,7 @@ class Cleaner
     public function truncateTable(
         string $table,
         ?string $database = null,
-        bool $disableForeignKeyConstraints = true
+        bool $disableForeignKeyConstraints = true,
     ): void {
         $db = $this->provider->database($database);
 
@@ -119,7 +119,7 @@ class Cleaner
         $db = $this->provider->database($database);
 
         /**
-         *@psalm-suppress UndefinedInterfaceMethod
+         * @psalm-suppress UndefinedInterfaceMethod
          */
         $db->getDriver()->getSchemaHandler()->disableForeignKeyConstraints();
     }
@@ -129,7 +129,7 @@ class Cleaner
         $db = $this->provider->database($database);
 
         /**
-         *@psalm-suppress UndefinedInterfaceMethod
+         * @psalm-suppress UndefinedInterfaceMethod
          */
         $db->getDriver()->getSchemaHandler()->enableForeignKeyConstraints();
     }
