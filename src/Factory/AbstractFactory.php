@@ -24,9 +24,9 @@ use Spiral\DatabaseSeeder\Factory\Exception\OutsideScopeException;
  * @implements FactoryInterface<TEntity>
  *
  * @psalm-import-type TDefinition from FactoryInterface
- * @psalm-type TState = callable(Faker, TDefinition):TDefinition
- * @psalm-type TEntityState = callable(TEntity):TEntity
- * @psalm-type TCallback = callable(TEntity):void
+ * @psalm-type TState = Closure(Faker, TDefinition):TDefinition
+ * @psalm-type TEntityState = Closure(TEntity):TEntity
+ * @psalm-type TCallback = Closure(TEntity):void
  *
  * @property-read $data TDefinition|TDefinition[] Will return an array if {@see static::$amount} is greater than 1 otherwise will return a single entity.
  * @property-read $entity TEntity
@@ -264,7 +264,7 @@ abstract class AbstractFactory implements FactoryInterface
         return \array_is_list($data) ? $data[0] : $data;
     }
 
-    public function __get(string $name): array
+    public function __get(string $name): mixed
     {
         return match ($name) {
             'data' => $this->raw(fn() => $this->definition()),
@@ -299,39 +299,39 @@ abstract class AbstractFactory implements FactoryInterface
         }
     }
 
-    /**
-     * @return TEntity|TEntity[]
-     * @internal
-     */
+    /** @internal */
     private function object(Closure $definition): object|array
     {
+        $entityClass = $this->entity();
+
         $this->entityFactory
             ->creationStrategy(
-                $this->entity(),
-                new ClosureStrategy(fn(string $class, array $data) => $this->makeEntity($data)),
+                $entityClass,
+                new ClosureStrategy(
+                    fn(string $class, array $data): object => $this->makeEntity($data),
+                ),
             )
-            ->define($this->entity(), $definition)
-            ->states($this->entity(), $this->states);
+            ->define($entityClass, $definition)
+            ->states($entityClass, $this->states);
 
         foreach ($this->afterMake as $afterMakeCallable) {
-            $this->entityFactory->afterMaking($this->entity(), $afterMakeCallable);
+            $this->entityFactory->afterMaking($entityClass, $afterMakeCallable);
         }
 
-        $result = $this->entityFactory->of($this->entity())->times($this->amount)->make($this->replaces);
+        /** @var TEntity|TEntity[] $result */
+        $result = $this->entityFactory->of($entityClass)->times($this->amount)->make($this->replaces);
 
         if (\is_array($result)) {
-            return \array_map(function (object $entity) {
-                return $this->applyEntityState($entity);
-            }, $result);
+            return \array_map(
+                fn(object $entity): object => $this->applyEntityState($entity),
+                $result,
+            );
         }
 
         return $this->applyEntityState($result);
     }
 
-    /**
-     * @return TEntity
-     * @internal
-     */
+    /** @internal */
     private function applyEntityState(object $entity): object
     {
         foreach ($this->entityStates as $state) {
