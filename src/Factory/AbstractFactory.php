@@ -189,10 +189,9 @@ abstract class AbstractFactory implements FactoryInterface
 
     /**
      * Create many entities with persisting them to the database.
+     * To change the default value use {@see static::$cleanHeap} property.
      *
      * @param bool|null $cleanHeap Clean the heap after creating entities.
-     *
-     * @note To change the default value use {@see static::$cleanHeap} property.
      */
     public function create(?bool $cleanHeap = null): array
     {
@@ -210,10 +209,9 @@ abstract class AbstractFactory implements FactoryInterface
 
     /**
      * Create an entity with persisting it to the database.
+     * To change the default value use {@see static::$cleanHeap} property.
      *
      * @param bool|null $cleanHeap Clean the heap after creating entity. Default value is false.
-     *
-     * @note To change the default value use {@see static::$cleanHeap} property.
      */
     public function createOne(?bool $cleanHeap = null): object
     {
