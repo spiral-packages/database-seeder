@@ -233,6 +233,9 @@ abstract class AbstractFactory implements FactoryInterface
         return $entity;
     }
 
+    /**
+     * @return TEntity[]
+     */
     public function make(): array
     {
         $entities = $this->object(fn() => $this->definition());
@@ -243,6 +246,9 @@ abstract class AbstractFactory implements FactoryInterface
         return $entities;
     }
 
+    /**
+     * @return TEntity
+     */
     public function makeOne(): object
     {
         $entity = $this->object(fn() => $this->definition());
